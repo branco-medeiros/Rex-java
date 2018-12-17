@@ -97,12 +97,9 @@ public abstract class Context {
 		return r;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean matchAt(int position, Object other) {
 		Object cur = this.getAt(position);
 		if(cur == null || other == null) return false;
-		if(other instanceof Comparable) return ((Comparable) other).compareTo(cur) == 0;
-		if(cur instanceof Comparable) return ((Comparable) cur).compareTo(other) == 0;
 		return other.equals(cur) || cur.equals(other);
 	}
 	
