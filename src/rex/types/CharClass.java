@@ -34,6 +34,15 @@ public class Charclass{
 		return this.equals(ch.charAt(0));
 	}
 	 
+
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other instanceof Character) return this.equals((Character) other);
+		if(other instanceof String) return this.equals((String) other);
+		
+		return super.equals(other);
+	}
  
 	
  	public static Charclass letter = 
