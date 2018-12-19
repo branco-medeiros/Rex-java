@@ -1,9 +1,6 @@
 # Rex-java
 
-Rex:
-
-Grammars resolve symbols; a non-terminal grammar needs other grammars to resolve the current input; a terminal grammar
-is 'self-sufficient';
+Rex works with individual Matchers as well as Grammars. A Grammar is a collection of named matchers. A non-terminal grammar needs other grammars to resolve the current input; a terminal grammar is self-sufficient.
 
 ## Types
 
@@ -53,7 +50,7 @@ is 'self-sufficient';
   - vars as Link%(Capture%T): list of captures performed while parsing the rule
   - children as Link%(Parse%T): list of sub-rules that matched the input
   
-Context:
+* Context is what is passed down to Matchers
   - sequence as Sequence%T: the current input being parsed
   - result as Link%(Parse%T): the result of the parsing; at any given moment, represents the
     current rule being applied
