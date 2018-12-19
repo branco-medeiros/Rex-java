@@ -10,8 +10,8 @@ is 'self-sufficient';
 * Lst%T is the basic read-only list implementation
   - get(index as int) as (T|Nothing): returns the index'th element or nothing if item is invalid
   - count as (int|Nothing): gets the number of itens; returns nothing if the count of items is unknown.
-  - each(fn as Predicate%(T, integer)>): enumerates all the itens; interrupts the enumeration if fn returns true
-  - find(fn as Predicate%(T,integer)) as (T|Nothing): specialization of each that returns the current item
+  - each(fn as Predicate%(T, int)): enumerates all the itens; interrupts the enumeration if fn returns true
+  - find(fn as Predicate%(T,int)) as (T|Nothing): specialization of each that returns the current item
       when fn returns true 
   - slice(start, end as int) as Span%T: returns a sublist of the specified range
   - slice(start as int, size as Size): returns a sublist of the specified range (Size is an alias to int)
@@ -19,7 +19,7 @@ is 'self-sufficient';
 * Span%T as Lst%T is an specialization of a Lst that represents a section of the list
   - start as int: indicates the first index of the span
   - end as (int|Nothing): index of next item after the last; if Nothing, the span has no defined end
-  - source as (Lst%T|Nothing): indicates the data source of the span; may be nothing, in which case it can be assigned once
+  - source as (Lst%T|Nothing): indicates the data source of the span; may be nothing, in which case it can be assigned.
   
 * Sequence%T as Lst%T tracks the poistion of an input sequence:
   - position as integer : gets /sets the current position
