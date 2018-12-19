@@ -1,5 +1,17 @@
 package rex.types;
 
+/***
+ * represents a linked list
+ * pop and peek operations without index operate on the last item
+ * of the list;
+ * when an index is supplied, it simulates an array access, where 
+ * index 0..n access the list from the oldest (0) to the newest (n)
+ * and index -1..-n access the list from the newest (-1) to the oldest (-n)
+ * 
+ *  
+ */
+
+
 public class Track<T> {
 	
 	private Node<T> node;
@@ -17,6 +29,23 @@ public class Track<T> {
 		return this.node.index + 1;
 	}
 	
+	public T peek() {
+		return this.node.value;
+	}
+	
+	
+	public T peek(int index) {
+		index = this.mapIndex(index);
+		if(index < 0 || index > this.node.index) return null;
+		Node<T> n = this.trackNode(new Tracker<Node<T>>() {
+			@Override
+			public boolean track(Node<T> value, int index) {
+				return value.index == index || value.index == 0;
+			}
+		});
+		return n.value;
+	}
+	
 	public T pop() {
 		T result = this.node.value;
 		if(this.node.prev != null) {
@@ -27,9 +56,10 @@ public class Track<T> {
 		return result;
 	}
 	
+	
 	public T pop(int index) {
 		index = this.mapIndex(index);
-		if(index > this.node.index) return null;
+		if(index < 0 || index > this.node.index) return null;
 		this.node = this.trackNode(new Tracker<Node<T>>() {
 			@Override
 			public boolean track(Node<T> value, int index) {
@@ -55,12 +85,12 @@ public class Track<T> {
 	
 	public Integer findIndex(Tracker<T> tracker) {
 		Node<T> n = this.trackNodeValue(tracker);
-		return n == null? null: this.node.index - n.index;
+		return n == null? null: n.index;
 	}
 	
 	private int mapIndex(int index) {
-		if(index < 0) return -index - 1;
-		return this.node.index - index;
+		if(index < 0) return this.node.index + index - 1;
+		return index;
 	}
 	
 	private Node<T> trackNodeValue(Tracker<T> tracker){
@@ -68,7 +98,7 @@ public class Track<T> {
 		return this.trackNode(new Tracker<Node<T>>() {
 			@Override
 			public boolean track(Node<T> value, int index) {
-				return t.track(value.value, index);
+				return t.track(value.value, value.index);
 			}
 		});
 	}

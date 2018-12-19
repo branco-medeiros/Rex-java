@@ -1,9 +1,8 @@
 package rex.matchers;
 
 import rex.Context;
-import rex.Matcher;
 
-public class LitMatcher extends Matcher {
+public class LitMatcher extends MatcherBase{
 
 	private Object value;
 	
@@ -12,7 +11,6 @@ public class LitMatcher extends Matcher {
 		this.value = value;
 	}
 	
-	@Override
 	public Context match(Context ctx) {
 		if(!ctx.match(this.value)) return ctx.fail();
 		ctx.moveNext();

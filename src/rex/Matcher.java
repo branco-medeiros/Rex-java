@@ -1,8 +1,5 @@
 package rex;
 
-public abstract class Matcher {
-	
-	public abstract Context match(Context ctx);
-	
-	
+public interface Matcher {
+	Context match(Context ctx);
 }

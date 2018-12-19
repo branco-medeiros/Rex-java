@@ -55,6 +55,7 @@ public abstract class Context {
 	}
 	
 	protected Track<Result> getResultTrack(){
+		@SuppressWarnings("unused")
 		Result temp = this.getResult(); //forces inicialization
 		return this.result;
 	}
@@ -93,7 +94,7 @@ public abstract class Context {
 	
 	public Result popResultAsChild() {
 		Result r = this.popResult();
-		this.result.getValue().add(r);
+		this.result.getValue().push(r);
 		return r;
 	}
 	
@@ -124,7 +125,6 @@ public abstract class Context {
 	}
 	
 	
-	
 	public Context fail() {
 		this.failed = true;
 		return this;
@@ -136,6 +136,8 @@ public abstract class Context {
 	}
 	
 	public Context moveNext() {
+		if(this.getFinished()) return null;
+		this.setPosition(this.getPosition() + 1);
 		return this;
 	}
 
