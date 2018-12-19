@@ -3,7 +3,6 @@ package rex.matchers;
 import java.util.Iterator;
 
 import rex.Context;
-import rex.Matcher;
 
 public class SeqMatcher extends IterableMatcher{
 
