@@ -1,5 +1,6 @@
 package rex.tests;
 
+import rex.testing.Test;
 import rex.types.Charclass;
 
 public class TestCharclass {
