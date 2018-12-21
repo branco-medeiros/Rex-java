@@ -2,7 +2,7 @@ package rex.matchers;
 
 import java.util.List;
 
-import rex.Context;
+import rex.types.Context;
 import rex.Matcher;
 
 public class OrMatcher extends ListMatcher{
@@ -12,14 +12,13 @@ public class OrMatcher extends ListMatcher{
 	}
 
 	@Override
-	public Context match(Context ctx) {
-		Context bad = null;
+	public boolean match(Context ctx) {
+		int pos = ctx.position();
 		for(Matcher m: list) {
-			Context ret = m.match(ctx.clone());
-			if(!ret.getFailed()) return ret;
-			if(bad == null || bad.getPosition() < ret.getPosition()) bad = ret;
+			ctx.setPosition(pos);
+			if(m.match(ctx)) return true;
 		}
-		return bad == null? ctx.fail() : bad;
+		return false;
 	}
 	
 	

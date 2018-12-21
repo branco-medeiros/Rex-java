@@ -1,11 +1,11 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.types.Context;
 
 public class BofMatcher extends MatcherBase{
 
 	@Override
-	public Context match(Context ctx) {
-		return ctx.getPosition() != 0? ctx.fail() : ctx;
+	public boolean match(Context ctx) {
+		return ctx.position() == 0;
 	}
 }

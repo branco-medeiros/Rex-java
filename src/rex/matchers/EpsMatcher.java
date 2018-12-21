@@ -1,11 +1,11 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.types.Context;
 
 public class EpsMatcher extends MatcherBase{
 
 	@Override
-	public Context match(Context ctx) {
-		return ctx;
+	public boolean match(Context ctx) {
+		return true;
 	}
 }

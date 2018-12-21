@@ -2,7 +2,7 @@ package rex.matchers;
 
 import java.util.Iterator;
 
-import rex.Context;
+import rex.types.Context;
 
 public class SeqMatcher extends IterableMatcher{
 
@@ -13,12 +13,14 @@ public class SeqMatcher extends IterableMatcher{
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Context match(Context ctx) {
+	public boolean match(Context ctx) {
 		Iterator it = items.iterator();
 		while(it.hasNext()) {
-			if(!ctx.match(it.next()) || ctx.moveNext() == null) return ctx.fail();
+			Object cur = it.next();
+			if(!ctx.matches(cur)) return false;
+			ctx.moveNext();
 		}
-		return ctx;
+		return true;
 	}
 	
 

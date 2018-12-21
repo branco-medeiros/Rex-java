@@ -1,12 +1,12 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.types.Context;
 import rex.Matcher;
 
 public abstract class MatcherBase implements Matcher{
 	
 	@Override
-	public abstract Context match(Context ctx);
+	public abstract boolean match(Context ctx);
 	
 	public Matcher plus() {
 		return new RepMatcher(1, null, this);

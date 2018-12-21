@@ -1,9 +1,9 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.types.Capture;
+import rex.types.Context;
+import rex.types.Stk;
 import rex.Matcher;
-import rex.types.Result;
-import rex.types.Span;
 
 public class CapMatcher extends ValueMatcher{
 
@@ -15,25 +15,15 @@ public class CapMatcher extends ValueMatcher{
 	}
 	
 	@Override
-	public Context match(Context ctx) {
-		Result r = ctx.getResult();
-		int children = r.count();
-		Span s = new Span();
-		s.setStart(ctx.getPosition());
-		int idx = r.count(id) - 1;
-		r.push(id, s);
-		ctx = value.match(ctx);
-		if(ctx.getFailed()) {
-			r.pop(idx);
-		} else {
-			if(r.count() - children == 1) {
-				//uses the resulting rule as value for the span
-				r.put(id, idx, r.peek());
-			} else {
-				s.setEnd(ctx.getPosition());
-			}
-		}
-		return ctx;
+	public boolean match(Context ctx) {
+		Capture c = new Capture(id, ctx);
+		Stk<Capture> vars = ctx.result().vars();
+		int count = vars.count();
+		vars.push(c);
+		boolean ret = value.match(ctx);
+		c.setEnd(ctx.position());
+		if(!ret) vars.pop(count);
+		return ret;
 	}
 
 }

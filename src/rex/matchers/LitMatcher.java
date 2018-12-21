@@ -1,6 +1,6 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.types.Context;
 
 public class LitMatcher extends MatcherBase{
 
@@ -11,10 +11,10 @@ public class LitMatcher extends MatcherBase{
 		this.value = value;
 	}
 	
-	public Context match(Context ctx) {
-		if(!ctx.match(this.value)) return ctx.fail();
+	public boolean match(Context ctx) {
+		if(!ctx.matches(this.value)) return false;
 		ctx.moveNext();
-		return ctx;
+		return true;
 	}
 
 }

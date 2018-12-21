@@ -13,5 +13,9 @@ public abstract class ListMatcher extends MatcherBase {
 		this.list = list;
 	}
 	
+	public List<Matcher> list(){
+		return this.list;
+	}
+	
 	
 }

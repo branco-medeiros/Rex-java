@@ -1,7 +1,7 @@
 package rex;
 
 import rex.tests.TestCharclass;
-import rex.types.Charclass;
+import rex.types.Charclass_old;
 
 public class App {
 
