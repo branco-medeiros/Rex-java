@@ -48,4 +48,15 @@ public class Capture implements Range{
 		return this;
 	}
 	
+	@Override
+	public String toString() {
+		return Capture.toString(this);
+	}
+
+	public static String toString(Capture c) {
+		if(c == null) return "[<NULL>]";
+		Integer end = c.end();
+		return String.format("[%s: %d, %s]", c.id(), c.start(), (end == null? "?": end.toString()));
+	}
+	
 }

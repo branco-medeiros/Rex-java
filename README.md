@@ -2,7 +2,7 @@
 
 Rex works with individual Matchers as well as Grammars. A Grammar is a collection of named matchers. A non-terminal grammar needs other grammars to resolve the current input; a terminal grammar is self-sufficient.
 
-## Types
+## Auxiliary Interfaces
 
 * Lst%T is the basic read-only list implementation
   - get(index as int) as (T|Nothing): returns the index'th element or nothing if item is invalid
@@ -10,23 +10,29 @@ Rex works with individual Matchers as well as Grammars. A Grammar is a collectio
   - each(fn as Predicate%(T, int)): enumerates all the itens; interrupts the enumeration if fn returns true
   - find(fn as Predicate%(T,int)) as (T|Nothing): specialization of each that returns the current item
       when fn returns true 
-  - slice(start, end as int) as Span%T: returns a sublist of the specified range
-  - slice(start as int, size as Size): returns a sublist of the specified range (Size is an alias to int)
+  - span(start, end as int) as Spn%T: returns a span for the specified range
+  - slice(start as int, size as int) as Spn%T: returns a span for the specified range;
+  - span(range as Range) as Spn%T : returns a span for the specified range
   
-* Span%T as Lst%T is an specialization of a Lst that represents a section of the list
+
+* Range : auxiliary interface to specify a range with a star and a (posibly absent) end
+	- start as int;
+	- end as (int|Nothing)
+	
+* Spn%T as [Lst%T, Range] is an specialization of a Lst that represents a section of the list
   - start as int: indicates the first index of the span
   - end as (int|Nothing): index of next item after the last; if Nothing, the span has no defined end
   - source as (Lst%T|Nothing): indicates the data source of the span; may be nothing, in which case it can be assigned.
   
-* Sequence%T as Lst%T tracks the poistion of an input sequence:
-  - position as integer : gets /sets the current position
+* Seq%T as Lst%T tracks the poistion of an input sequence:
+  - position as int : gets /sets the current position
   - current as (T|Nothing) : gets the current item
   - finished as boolean: returns true if the current poisition is beyond the end of input
-  - move-next as (T|Nothing): increments the position and returns the last item
+  - move-next as boolean: increments the position and returns the last item
   - next() as (T|Nothing): alias to <move-next>
   - has-next as boolean: inverse of <finished> 
 
-* Link%T as Lst%T is a singly-linked list of values; the current item is the last value assigned;
+* Stk%T as Lst%T is a singly-linked list of values; the current item is the last value assigned;
   notice that the each (and find) operation enumerate the items in reverse order (from the last one
   added to the first)
   
@@ -41,18 +47,26 @@ Rex works with individual Matchers as well as Grammars. A Grammar is a collectio
   - peek as (T|Nothing): alias to get
   - peek(index as int) as (T|Nothing): alias to get(int)
   
+## Parsing related classes
 
-* Capture%T as Span%T represents a 'capture' of the input
+* Capture as Range represents a 'capture' of the input
   - id as String: the id of the capture
  
-* Parse%T as Capture%T represents a parse result
+* ParseResult as Capture represents a parse result
   - rule as (Rex.Rule|Nothing): identifies the current rule
-  - vars as Link%(Capture%T): list of captures performed while parsing the rule
-  - children as Link%(Parse%T): list of sub-rules that matched the input
+  - vars as Stk%Capture: list of captures performed while parsing the rule
+  - children as Stk%ParseResult: list of sub-rules that matched the input
   
 * Context is what is passed down to Matchers
-  - sequence as Sequence%T: the current input being parsed
-  - result as Link%(Parse%T): the result of the parsing; at any given moment, represents the
+	- position as int: gets/sets the current position being parsed
+	- finished: returns true if at the end of input
+	- move-next as boolean: moves to the next position, if possible
+  - result as ParseResult: the result of the parsing; at any given moment, represents the
     current rule being applied
-  - root as Link%(Parse%T): the root of the parsing result
-  - failure as Link%(Parse%T): the longest failed parse
+  - root as ParseResult: the root of the parsing result
+  - trace as List%ParseResult: the trace of the current parse;
+  - matches(position as int, value as object) as boolean: returns true/false
+      if the element at the specified position matches the supplied value;
+  - matches(value as object) as boolean: returns true/false if the current item
+  		matches the supplied value
+  		

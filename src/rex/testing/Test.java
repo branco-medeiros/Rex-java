@@ -36,6 +36,10 @@ public class Test {
 				msg,
 				what
 			));
+			if(error != null) {
+				this.test.print(String.format(">> exception: %s", error.getMessage()));
+				error.printStackTrace();
+			}
 
 			this.status = ok;
 			return this.result;
@@ -67,6 +71,22 @@ public class Test {
 			return this.report(error == null && ok, desc, "IS FALSE"); 
 		}
 		
+		public Object isEqual(Object other) {
+			return this.report(
+				error == null && result.equals(other), 
+				desc, 
+				"IS EQUAL TO '" + other.toString() + "'"
+			);
+		}
+
+		public Object isNotEqual(Object other) {
+			return this.report(
+				error == null && !result.equals(other), 
+				desc, 
+				"IS NOT EQUAL TO '" + other.toString() + "'"
+			);
+		}
+
 	}
 	
 	private List<TestInfo> tests = new ArrayList<TestInfo>();
@@ -82,6 +102,13 @@ public class Test {
 	public int getCount() {
 		return this.tests.size();
 	}
+	
+	/*
+	public TestInfo ensure(String description, Object value) {
+		final Object ref = value;
+		return ensure(description, ()-> ref);
+	}
+	*/
 	
 	public TestInfo ensure(String description, TestSubject subj) {
 		TestInfo ti = new TestInfo();

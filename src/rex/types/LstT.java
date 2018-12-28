@@ -27,11 +27,10 @@ public class LstT<T> extends LstBase<T>{
 		return list.iterator();
 	}
 
-
-	@SuppressWarnings("unchecked")
 	@Override
-	public T[] toArray() {
-		return (T[]) list.toArray();
+	public List<T> toList() {
+		return list;
 	}
+	
 
 }

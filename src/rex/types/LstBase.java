@@ -1,11 +1,20 @@
 package rex.types;
 
-import java.util.Arrays;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public abstract class LstBase<T> implements Lst<T>{
 
+	@SuppressWarnings("unchecked")
+	protected Class<T> getType() {
+		return (Class<T>) (
+			(ParameterizedType)	
+			getClass().getGenericSuperclass()
+		).getActualTypeArguments()[0];
+	}
+	
 	protected int getIndex(int index) {
 		return index < 0? count() + index: index;
 	}
@@ -47,10 +56,20 @@ public abstract class LstBase<T> implements Lst<T>{
 
 	@Override
 	public List<T> toList() {
-		return Arrays.asList(this.toArray());
+		List<T> ret = new ArrayList<T>(count());
+		for(int i=0, max=count(); i < max; ++i) ret.set(i,  get(i));
+		return ret;
+	}
+	
+	@Override
+	public Object[] toArray() {
+		return this.toList().toArray();
 	}
 
-
+	@Override
+	public T[] toArray(T[] ref) {
+		return this.toList().toArray(ref);
+	}
 	
 
 }

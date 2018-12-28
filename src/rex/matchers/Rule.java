@@ -11,6 +11,9 @@ import rex.types.Predicate;
 public class Rule extends ListMatcher implements Matcher{
 
 	private static final List<Matcher> EMPTY_LIST = new ArrayList<Matcher>();
+	
+	private String name;
+	
 	public Rule(String name, List<Matcher> list) {
 		super(EMPTY_LIST);
 		this
@@ -18,9 +21,16 @@ public class Rule extends ListMatcher implements Matcher{
 			.setBody(list);
 	}
 
-
-	private String name;
+	public Rule(String name) {
+		super(EMPTY_LIST);
+		this
+			.setName(name);
+	}
 	
+	public Rule() {
+		super(EMPTY_LIST);
+	}
+
 	public String name() {
 		return this.name;
 	}

@@ -1,5 +1,7 @@
 package rex.types;
 
+import java.lang.reflect.Array;
+
 public abstract class SpnBase<T> extends LstBase<T> implements Spn<T> {
 
 	protected Lst<T> src;
@@ -55,8 +57,9 @@ public abstract class SpnBase<T> extends LstBase<T> implements Spn<T> {
 
 	@Override
 	public T[] toArray() {
+		Class<T> type = this.getType();
 		@SuppressWarnings("unchecked")
-		T[] ret = (T[]) new Object[count()];
+		T[] ret = (T[]) Array.newInstance(type, count()); 
 		int j = 0;
 		for(int i=start, max = end(); i < max; ++i) {
 			ret[j] = src.get(i);

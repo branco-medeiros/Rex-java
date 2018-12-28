@@ -2,11 +2,11 @@ package rex.matchers;
 
 import rex.types.Context;
 import rex.types.ParseResult;
+import rex.types.ParseResultState;
 import rex.Matcher;
 
 public class RepMatcher extends ValueMatcher{
 	
-	private Matcher value;
 	private Integer min;
 	private Integer max;
 
@@ -19,8 +19,10 @@ public class RepMatcher extends ValueMatcher{
 	@Override
 	public boolean match(Context ctx) {
 		ParseResult pr = ctx.result();
-		int vars = pr.vars().count();
-		int children = pr.children().count();
+		ParseResultState ps = pr.getState();
+		
+		boolean hasMin = min != null && min != 0;
+		boolean hasMax = max != null && max != 0;
 		
 		int p1 = ctx.position();
 		int count = 0;
@@ -28,21 +30,17 @@ public class RepMatcher extends ValueMatcher{
 			int p2 = p1;
 			if(!value.match(ctx)) break;
 			count += 1;
-			if(max != null && count >= max) {
-				ctx.setPosition(p1);
-				break;
-			}
+			if(hasMax && count >= max) break;
 			p1 = ctx.position();
 			if(p1 == p2) {
-				if(min == null && max == null) break;
-				if(max == null && count >= min) break;
+				if(!hasMin && !hasMax) break;
+				if(hasMin && count >= min) break;
 			};
 		}
-		if(min != null && min < count) {
+		if(hasMin && count < min) {
 			//discards any variables and children
 			//built while repeating
-			pr.vars().pop(vars);
-			pr.children().pop(children);
+			pr.setState(ps);
 			return false;
 		}
 		return true;

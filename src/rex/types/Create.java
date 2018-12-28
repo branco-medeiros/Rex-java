@@ -77,7 +77,7 @@ public class Create {
 	}
 	
 	public static ContextT<Character> contextFrom(CharSequence list){
-		return new ContextT<Character>(lstFrom(list));
+		return new ContextChar(lstFrom(list));
 	}
 	
 	public static <T> ContextT<T> contextFrom(Lst<T> list){

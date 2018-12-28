@@ -10,4 +10,8 @@ public abstract class IterableMatcher extends MatcherBase {
 		this.items = items;
 	}
 	
+	public Iterable items() {
+		return this.items;
+	}
+	
 }

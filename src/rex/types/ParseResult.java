@@ -1,5 +1,8 @@
 package rex.types;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import rex.Matcher;
 import rex.matchers.Rule;
 
@@ -13,7 +16,8 @@ public class ParseResult extends Capture {
 	
 	
 	public ParseResult(Rule rule, Context ctx) {
-		super(rule == null? null: rule.name(), ctx);
+		super(null, ctx);
+		this.rule = rule;
 	}
 
 	public ParseResult(Rule rule, int start, Integer end) {
@@ -22,8 +26,7 @@ public class ParseResult extends Capture {
 
 	@Override
 	public String id() {
-		Rule r = rule();
-		String n = r == null? null: r.name();
+		String n = rule == null? null: rule.name();
 		return n == null? "": n;
 	}
 	
@@ -67,5 +70,50 @@ public class ParseResult extends Capture {
 	public ParseResult setMatcher(Matcher value) {
 		this.matcher = value;
 		return this;
+	}
+	
+	public ParseResultState getState() {
+		return new ParseResultState()
+				.setVars(this.vars.count())
+				.setChildren(this.children.count());
+	}
+	
+	public ParseResult setState(ParseResultState value) {
+		this.vars.pop(value.vars);
+		this.children.pop(value.children);
+		return this;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return ParseResult.toString(this);
+	}
+	
+	public static String toString(ParseResult pr) {
+		if(pr == null) return "[<NULL>]";
+		StringBuilder s = new StringBuilder();
+		s.append("[");
+		s.append(pr.id());
+		s.append(": ");
+		s.append(pr.start());
+		s.append(", ");
+		Integer end = pr.end();
+		s.append(end == null? "?": end.toString());
+		s.append(" vars:{");
+		Set<String> names = new HashSet<String>();
+		for(Capture c: pr.vars().toList()) {
+			names.add(c.id());
+		}
+		s.append(String.join(", ", names));
+		
+		s.append("} children:{");
+		names = new HashSet<String>();
+		for(ParseResult p: pr.children().toList()) {
+			names.add(Capture.toString(p));
+		}
+		s.append(String.join(", ", names));
+		s.append("}]");
+		return s.toString();
 	}
 }

@@ -11,5 +11,7 @@ public abstract class ValueMatcher extends MatcherBase{
 		this.value = value;
 	}
 		
-
+	public Matcher value() {
+		return this.value;
+	}
 }

@@ -1,6 +1,6 @@
 package rex.types;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,13 +9,13 @@ public abstract class StkBase<T> implements  Stk<T>{
 	private Node<T> node;
 	
 	public StkBase() {
-		this.node = new Node<T>(null, null);
+		//this.node = new Node<T>(null, null);
 	}
 	
 	public StkBase(Stk<T> other) {
 		if(other == null) throw new NullPointerException("other");
 		Node<T> n = other.getNode();
-		this.node = new Node<T>(n.value, n.prev);
+		this.node = n == null? null: new Node<T>(n.value, n.prev);
 	}
 	
 	protected int getIndex(int index) {
@@ -25,12 +25,17 @@ public abstract class StkBase<T> implements  Stk<T>{
 	
 	@Override
 	public T value() {
-		return node.value;
+		return node == null? null: node.value;
 	}
 
+	protected Node<T> theNode(){
+		if(node == null) node = new Node<T>(null, null);
+		return node;
+	}
+	
 	@Override
 	public Stk<T> setValue(T value) {
-		node.value = value;
+		theNode().value = value;
 		return this;
 	}
 
@@ -46,11 +51,7 @@ public abstract class StkBase<T> implements  Stk<T>{
 
 	@Override
 	public Stk<T> push(T value) {
-		if(node.value == null) {
-			node.value = value;
-		} else {
-			node = new Node<T>(value, node);
-		}
+		node = new Node<T>(value, node);
 		return this;
 	}
 
@@ -64,12 +65,7 @@ public abstract class StkBase<T> implements  Stk<T>{
 		Node<T> n = findNode(index);
 		if(n == null) return null;
 		T ret = n.value;
-		if(n.prev == null) {
-			node = n;
-			n.value = null;
-		} else {
-			node = n.prev;
-		}
+		node = n.prev;
 		return ret;
 	}
 
@@ -93,7 +89,7 @@ public abstract class StkBase<T> implements  Stk<T>{
 
 	@Override
 	public Integer count() {
-		return node.index + 1;
+		return node == null? 0: node.index + 1;
 	}
 
 	@Override
@@ -123,19 +119,23 @@ public abstract class StkBase<T> implements  Stk<T>{
 
 	@Override
 	public List<T> toList() {
-		return Arrays.asList(this.toArray());
-	}
-
-	@Override
-	public T[] toArray() {
-		@SuppressWarnings("unchecked")
-		T[] ret = (T[]) new Object[count()];
+		List<T> ret = new ArrayList<T>(count());
 		Node<T> cur = node;
 		while(cur != null) {
-			ret[cur.index] = cur.value;
+			ret.set(cur.index, cur.value);
 			cur = cur.prev;
 		}
 		return ret;
+	}
+
+	@Override
+	public Object[] toArray() {
+		return this.toList().toArray();
+	}
+	
+	@Override
+	public T[] toArray(T[] ref) {
+		return this.toList().toArray(ref);
 	}
 
 	@Override
@@ -151,7 +151,10 @@ public abstract class StkBase<T> implements  Stk<T>{
 	protected Node<T> eachNode(Predicate<T> fn){
 		Node<T> cur = node;
 		while(cur != null) {
-			if(fn.eval(cur.value,  cur.index)) break;
+			boolean ok = cur.index > 0 || cur.value != null;
+			if(ok) {
+				if(fn.eval(cur.value,  cur.index)) break;
+			}
 			cur = cur.prev;
 		}
 		return cur;

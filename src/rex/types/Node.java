@@ -10,4 +10,8 @@ public class Node<T> {
 		this.prev = prev;
 		if(prev != null) this.index = this.prev.index + 1; 
 	}
+	
+	boolean empty() {
+		return index == 0 && value == null;
+	}
 }

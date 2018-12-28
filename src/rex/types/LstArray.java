@@ -1,5 +1,8 @@
 package rex.types;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class LstArray<T> extends LstBase<T>  {
 
 	private T[] list;
@@ -23,6 +26,11 @@ public class LstArray<T> extends LstBase<T>  {
 	@Override
 	public T[] toArray() {
 		return list;
+	}
+	
+	@Override
+	public List<T> toList() {
+		return Arrays.asList(this.toArray());
 	}
 	
 

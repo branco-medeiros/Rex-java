@@ -1,5 +1,8 @@
 package rex.types;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class LstChar extends LstBase<Character>{
 
 	private CharSequence chars;
@@ -29,4 +32,8 @@ public class LstChar extends LstBase<Character>{
 		return ret;
 	}
 
+	@Override
+	public List<Character> toList() {
+		return Arrays.asList(toArray());
+	}
 }

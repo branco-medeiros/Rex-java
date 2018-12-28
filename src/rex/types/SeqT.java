@@ -24,9 +24,5 @@ public class SeqT<T> extends SeqBase<T> {
 		return lst.count();
 	}
 
-	@Override
-	public T[] toArray() {
-		return lst.toArray();
-	}
 
 }

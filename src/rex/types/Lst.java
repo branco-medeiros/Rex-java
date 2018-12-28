@@ -10,5 +10,6 @@ public interface Lst<T> extends Iterable<T>{
 	Spn<T> span(int start, Integer end);
 	Spn<T> slice(int start, int count);
 	List<T> toList();
-	T[] toArray();
+	Object[] toArray();
+	T[] toArray(T[] ref);
 }
