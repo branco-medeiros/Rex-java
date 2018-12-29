@@ -75,4 +75,20 @@ public abstract class ContextBase<T> extends SeqT<T> implements Context{
 	public ParseResult find(Predicate<ParseResult> fn) {
 		return result.each(fn);
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Iterable range(int start, Integer end) {
+		return (Iterable) this.span(start, end);
+	}
+	
+	@Override
+	public Capture var(String id) {
+		return this.result().vars().each(new Predicate<Capture>() {
+			@Override
+			public Boolean eval(Capture value, int index) {
+				return value.matches(id);
+			}
+		});
+	}
 }

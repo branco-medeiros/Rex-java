@@ -251,4 +251,13 @@ public class TestRex {
 	
 
 
+	public static void testAll() {
+		testLit();
+		testAnd();
+		testOr();
+		testOpt();
+		testPlus();
+		testStar();
+		
+	}
 }

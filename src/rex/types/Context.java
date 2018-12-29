@@ -14,9 +14,12 @@ public interface Context {
 
 	ParseResult result();
 	ParseResult root();
+	Capture var(String id);
 	ParseResult enter(Rule rule);
 	ParseResult leave(boolean Result);
 	ParseResult swap(ParseResult other);
 	List<ParseResult> trace();
 	ParseResult find(Predicate<ParseResult> fn);
+	@SuppressWarnings("rawtypes")
+	Iterable range(int start, Integer end);
 }

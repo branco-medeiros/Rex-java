@@ -1,7 +1,5 @@
 package rex.matchers;
 
-import java.util.Iterator;
-
 import rex.types.Context;
 
 public class SeqMatcher extends IterableMatcher{
@@ -11,17 +9,19 @@ public class SeqMatcher extends IterableMatcher{
 		super(items);
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean match(Context ctx) {
-		Iterator it = items.iterator();
-		while(it.hasNext()) {
-			Object cur = it.next();
-			if(!ctx.matches(cur)) return false;
-			ctx.moveNext();
-		}
-		return true;
+		return matchIt(ctx, items);
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public static boolean matchIt(Context ctx, Iterable items) {
+		int count = 0;
+		for(Object cur: items) {
+			if(!ctx.matches(cur)) return false;
+			count += 1;
+		}
+		return count > 0;
+	}
 
 }

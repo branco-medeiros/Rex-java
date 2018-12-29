@@ -2,7 +2,6 @@ package rex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import rex.matchers.AndMatcher;
@@ -11,13 +10,18 @@ import rex.matchers.CapMatcher;
 import rex.matchers.EofMatcher;
 import rex.matchers.EpsMatcher;
 import rex.matchers.FirstOfMatcher;
+import rex.matchers.Grammar;
 import rex.matchers.IsMatcher;
 import rex.matchers.IsNotMatcher;
 import rex.matchers.LitMatcher;
 import rex.matchers.OrMatcher;
 import rex.matchers.PrecMatcher;
+import rex.matchers.ReMatcher;
 import rex.matchers.RepMatcher;
 import rex.matchers.SeqMatcher;
+import rex.types.Context;
+import rex.types.Create;
+import rex.types.ParseResult;
 
 public class Rex {
 	
@@ -50,10 +54,11 @@ public class Rex {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static List<Matcher> asMatcherList(Iterable value) {
+	public static List<Matcher> asMatcherList(Iterable values) {
 		List<Matcher> list = new ArrayList<Matcher>();
-		Iterator it = value.iterator();
-		while(it.hasNext()) list.add(asMatcher(it.next()));
+		for(Object o: values){
+			list.add(asMatcher(o));
+		}
 		return list;
 	}
 
@@ -126,6 +131,25 @@ public class Rex {
 	
 	public static CapMatcher cap(String id, Object... values) {
 		return new CapMatcher(id, asMatcher(values));
+	}
+	
+	public static ReMatcher recap(String id) {
+		return new ReMatcher(id);
+	}
+	
+	public static Grammar grammar() {
+		return new Grammar();
+	}
+	
+	public static Context match(Matcher matcher, Context ctx) {
+		if(matcher == null) throw new NullPointerException("matcher");
+		if(ctx == null) throw new NullPointerException("ctx");
+		matcher.match(ctx);
+		return ctx;
+	}
+	
+	public static Context find(Matcher matcher, Context ctx) {
+		
 	}
 	
 	

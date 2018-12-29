@@ -1,12 +1,27 @@
 package rex.matchers;
 
-public class ReMatcher extends SeqMatcher{
+import rex.types.Capture;
+import rex.types.Context;
 
-	private static final Object[] EMPTY_ARRAY = new Object[0];
+public class ReMatcher extends MatcherBase{
+
+	private String id;
 	
 	public ReMatcher(String id) {
-		super(EMPTY_ARRAY);
-		
+		this.id = id;
+	}
+	
+	public String id() {
+		return id;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean match(Context ctx) {
+		Capture cap = ctx.var(id);
+		if(cap == null) return false;
+		Iterable iter = ctx.range(cap.start(), cap.end());
+		return SeqMatcher.matchIt(ctx, iter);
 	}
 	
 
