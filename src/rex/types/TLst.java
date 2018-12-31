@@ -3,11 +3,11 @@ package rex.types;
 import java.util.Iterator;
 import java.util.List;
 
-public class LstT<T> extends LstBase<T>{
+public class TLst<T> extends BaseLst<T>{
 
 	private List<T> list;
 	
-	public LstT(List<T> list) {
+	public TLst(List<T> list) {
 		if(list == null) throw new NullPointerException("list");
 		this.list = list;
 	}

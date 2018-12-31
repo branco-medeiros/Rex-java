@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import rex.interfaces.Context;
 import rex.matchers.AndMatcher;
 import rex.matchers.AnyMatcher;
 import rex.matchers.CapMatcher;
@@ -19,9 +20,6 @@ import rex.matchers.PrecMatcher;
 import rex.matchers.ReMatcher;
 import rex.matchers.RepMatcher;
 import rex.matchers.SeqMatcher;
-import rex.types.Context;
-import rex.types.Create;
-import rex.types.ParseResult;
 
 public class Rex {
 	
@@ -149,7 +147,7 @@ public class Rex {
 	}
 	
 	public static Context find(Matcher matcher, Context ctx) {
-		
+		return null;
 	}
 	
 	

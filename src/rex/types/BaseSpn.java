@@ -2,13 +2,17 @@ package rex.types;
 
 import java.lang.reflect.Array;
 
-public abstract class SpnBase<T> extends LstBase<T> implements Spn<T> {
+import rex.interfaces.Lst;
+import rex.interfaces.Predicate;
+import rex.interfaces.Spn;
+
+public abstract class BaseSpn<T> extends BaseLst<T> implements Spn<T> {
 
 	protected Lst<T> src;
 	protected int start;
 	protected Integer end;
 	
-	public SpnBase(Lst<T> src, int start, Integer end) {
+	public BaseSpn(Lst<T> src, int start, Integer end) {
 		this.src = src;
 		this.start = start;
 		this.end = end;
@@ -68,12 +72,12 @@ public abstract class SpnBase<T> extends LstBase<T> implements Spn<T> {
 		return ret;
 	}
 
-	public SpnBase<T> setEnd(Integer value){
+	public BaseSpn<T> setEnd(Integer value){
 		this.end = value;
 		return this;
 	}
 	
-	public SpnBase<T> setStart(int value){
+	public BaseSpn<T> setStart(int value){
 		this.start = value;
 		return this;
 	}

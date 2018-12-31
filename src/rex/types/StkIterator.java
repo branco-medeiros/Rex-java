@@ -3,11 +3,11 @@ package rex.types;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class StkIter<T>  implements Iterator<T>{
+public class StkIterator<T>  implements Iterator<T>{
 
 		private Node<T> cur;
 		
-		public StkIter(Node<T> node) {
+		public StkIterator(Node<T> node) {
 			cur = node;
 		}
 		

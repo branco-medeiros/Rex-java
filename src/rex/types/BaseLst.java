@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class LstBase<T> implements Lst<T>{
+import rex.interfaces.Lst;
+import rex.interfaces.Predicate;
+import rex.interfaces.Range;
+import rex.interfaces.Spn;
+
+public abstract class BaseLst<T> implements Lst<T>{
 
 	@SuppressWarnings("unchecked")
 	protected Class<T> getType() {
@@ -40,7 +45,7 @@ public abstract class LstBase<T> implements Lst<T>{
 		int max = count();
 		start = Math.min(Math.max(0, getIndex(start)),  max-1);
 		end = end == null? max: Math.min(Math.max(0, getIndex(end)),  max);
-		return new SpnT<T>(this, start, end);
+		return new TSpn<T>(this, start, end);
 	}
 
 	@Override
@@ -51,7 +56,7 @@ public abstract class LstBase<T> implements Lst<T>{
 
 	@Override
 	public Iterator<T> iterator() {
-		return new SeqT<T>(this);
+		return new TSeq<T>(this);
 	}
 
 	@Override

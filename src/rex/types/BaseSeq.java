@@ -2,7 +2,9 @@ package rex.types;
 
 import java.util.NoSuchElementException;
 
-public abstract class SeqBase<T> extends LstBase<T> implements Seq<T> {
+import rex.interfaces.Seq;
+
+public abstract class BaseSeq<T> extends BaseLst<T> implements Seq<T> {
 
 	protected int pos;
 

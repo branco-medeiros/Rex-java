@@ -2,19 +2,30 @@ package rex.types;
 
 import java.util.List;
 
+import rex.interfaces.Context;
+import rex.interfaces.Lst;
+import rex.interfaces.Predicate;
+import rex.interfaces.Stk;
 import rex.matchers.Rule;
+import rex.utils.Create;
 
-public abstract class ContextBase<T> extends SeqT<T> implements Context{
+public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	
 	private Stk<ParseResult> result = Create.stk();
 	private ParseResult root = null;
-
-	public ContextBase(Lst<T> src) {
+	private Lst<T> source;
+	
+	public BaseContext(Lst<T> src) {
 		super(src);
+		source = src;
 		root = new ParseResult(null, this);
 		result.push(root);
 	}
 
+	public Lst<T> source(){
+		return source;
+	}
+	
 	@Override
 	public ParseResult result(){
 		return this.result.peek();
@@ -48,7 +59,7 @@ public abstract class ContextBase<T> extends SeqT<T> implements Context{
 	}
 
 	@Override
-	public ContextBase<T> setPosition(int value) {
+	public BaseContext<T> setPosition(int value) {
 		super.setPosition(value);
 		return this;
 	}
@@ -76,10 +87,9 @@ public abstract class ContextBase<T> extends SeqT<T> implements Context{
 		return result.each(fn);
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Iterable range(int start, Integer end) {
-		return (Iterable) this.span(start, end);
+	public Iterable<T> range(int start, Integer end) {
+		return this.span(start, end);
 	}
 	
 	@Override

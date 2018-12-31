@@ -1,4 +1,4 @@
-package rex.types;
+package rex.interfaces;
 
 import java.util.Iterator;
 

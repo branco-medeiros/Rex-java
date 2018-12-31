@@ -1,7 +1,7 @@
 package rex.matchers;
 
-import rex.types.Context;
 import rex.Matcher;
+import rex.interfaces.Context;
 
 public abstract class MatcherBase implements Matcher{
 	

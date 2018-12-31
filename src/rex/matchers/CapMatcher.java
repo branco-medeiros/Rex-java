@@ -1,9 +1,9 @@
 package rex.matchers;
 
 import rex.types.Capture;
-import rex.types.Context;
-import rex.types.Stk;
 import rex.Matcher;
+import rex.interfaces.Context;
+import rex.interfaces.Stk;
 
 public class CapMatcher extends ValueMatcher{
 

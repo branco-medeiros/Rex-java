@@ -3,7 +3,7 @@ package rex.matchers;
 import java.util.List;
 
 import rex.Matcher;
-import rex.types.Context;
+import rex.interfaces.Context;
 
 public class AndMatcher extends ListMatcher implements Matcher {
 

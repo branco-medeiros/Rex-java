@@ -1,8 +1,10 @@
 package rex.types;
 
-public class ContextChar extends ContextT<Character>{
+import rex.interfaces.Lst;
 
-	public ContextChar(Lst<Character> src) {
+public class CharContext extends TContext<Character>{
+
+	public CharContext(Lst<Character> src) {
 		super(src);
 	}
 	

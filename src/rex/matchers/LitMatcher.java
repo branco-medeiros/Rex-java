@@ -1,6 +1,6 @@
 package rex.matchers;
 
-import rex.types.Context;
+import rex.interfaces.Context;
 
 public class LitMatcher extends MatcherBase{
 

@@ -3,17 +3,18 @@ package rex.types;
 import java.util.Arrays;
 import java.util.List;
 
-public class LstChar extends LstBase<Character>{
+public class CharLst extends BaseLst<Character>{
 
 	private CharSequence chars;
 	
-	public LstChar(CharSequence chars) {
+	public CharLst(CharSequence chars) {
 		if(chars == null) throw new NullPointerException("chars");
 		this.chars = chars;
 	}
 	
 	@Override
 	public Character get(int index) {
+		if(index < 0 || index >= count()) return null;
 		return chars.charAt(getIndex(index));
 	}
 

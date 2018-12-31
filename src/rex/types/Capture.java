@@ -1,5 +1,13 @@
 package rex.types;
 
+import java.util.List;
+
+import rex.interfaces.Context;
+import rex.interfaces.Lst;
+import rex.interfaces.Range;
+import rex.interfaces.Spn;
+import rex.utils.Create;
+
 public class Capture implements Range{
 
 	private String id;
@@ -58,5 +66,21 @@ public class Capture implements Range{
 		Integer end = c.end();
 		return String.format("[%s: %d, %s]", c.id(), c.start(), (end == null? "?": end.toString()));
 	}
+
+	public <T> Spn<T> span(Lst<T> src){
+		return Create.spnFrom(src, this.start, this.end);
+	}
+
+	public <T> Spn<T> span(List<T> src){
+		return Create.spnFrom(src, this.start, this.end);
+	}
 	
+	public <T> Spn<T> span(T[] src){
+		return Create.spnFrom(src, this.start, this.end);
+	}
+	
+	public Spn<Character> span(CharSequence src){
+		return Create.spnFrom(src, this.start, this.end);
+	}
+
 }

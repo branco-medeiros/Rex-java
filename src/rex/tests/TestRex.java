@@ -2,10 +2,10 @@ package rex.tests;
 
 import rex.Matcher;
 import rex.Rex;
+import rex.interfaces.Context;
 import rex.testing.Test;
 import rex.types.Charclass;
-import rex.types.Context;
-import rex.types.Create;
+import rex.utils.Create;
 
 public class TestRex {
 	

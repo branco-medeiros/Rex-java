@@ -1,7 +1,7 @@
 package rex.matchers;
 
-import rex.types.Context;
-import rex.types.ContextAction;
+import rex.interfaces.Context;
+import rex.interfaces.ContextAction;
 
 public class FnMatcher extends MatcherBase {
 

@@ -3,11 +3,11 @@ package rex.types;
 import java.util.Arrays;
 import java.util.List;
 
-public class LstArray<T> extends LstBase<T>  {
+public class ArrayLst<T> extends BaseLst<T>  {
 
 	private T[] list;
 	
-	public LstArray(T[] list) {
+	public ArrayLst(T[] list) {
 		if(list == null) throw new NullPointerException("list");
 		this.list = list;
 	}

@@ -4,15 +4,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class StkBase<T> implements  Stk<T>{
+import rex.interfaces.Predicate;
+import rex.interfaces.Range;
+import rex.interfaces.Spn;
+import rex.interfaces.Stk;
+import rex.utils.Create;
+
+public abstract class BaseStk<T> implements  Stk<T>{
 	
 	private Node<T> node;
 	
-	public StkBase() {
+	public BaseStk() {
 		//this.node = new Node<T>(null, null);
 	}
 	
-	public StkBase(Stk<T> other) {
+	public BaseStk(Stk<T> other) {
 		if(other == null) throw new NullPointerException("other");
 		Node<T> n = other.getNode();
 		this.node = n == null? null: new Node<T>(n.value, n.prev);
@@ -140,7 +146,7 @@ public abstract class StkBase<T> implements  Stk<T>{
 
 	@Override
 	public Iterator<T> iterator() {
-		return new StkIter<T>(node);
+		return new StkIterator<T>(node);
 	}
 
 	@Override

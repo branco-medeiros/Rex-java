@@ -1,4 +1,6 @@
-package rex.types;
+package rex.interfaces;
+
+import rex.types.Node;
 
 public interface Stk<T> extends Lst<T> {
 	T value();

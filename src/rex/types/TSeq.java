@@ -1,10 +1,12 @@
 package rex.types;
 
-public class SeqT<T> extends SeqBase<T> {
+import rex.interfaces.Lst;
+
+public class TSeq<T> extends BaseSeq<T> {
 
 	private Lst<T> lst;
 	
-	public SeqT(Lst<T> lst) {
+	public TSeq(Lst<T> lst) {
 		if(lst == null) throw new NullPointerException("lst");
 		this.lst = lst;
 	}

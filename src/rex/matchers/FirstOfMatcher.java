@@ -2,7 +2,7 @@ package rex.matchers;
 
 import java.util.Iterator;
 
-import rex.types.Context;
+import rex.interfaces.Context;
 
 public class FirstOfMatcher extends IterableMatcher{
 

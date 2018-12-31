@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rex.Matcher;
-import rex.types.Context;
+import rex.interfaces.Context;
+import rex.interfaces.Predicate;
 import rex.types.ParseResult;
-import rex.types.Predicate;
 
 public class Rule extends ListMatcher implements Matcher{
 

@@ -1,8 +1,10 @@
-package rex.types;
+package rex.interfaces;
 
 import java.util.List;
 
 import rex.matchers.Rule;
+import rex.types.Capture;
+import rex.types.ParseResult;
 
 public interface Context {
 	boolean finished();

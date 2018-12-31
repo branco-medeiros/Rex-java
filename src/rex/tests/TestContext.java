@@ -1,10 +1,10 @@
 package rex.tests;
 
+import rex.interfaces.Context;
 import rex.matchers.Rule;
 import rex.testing.Test;
-import rex.types.Context;
-import rex.types.Create;
 import rex.types.ParseResult;
+import rex.utils.Create;
 
 public class TestContext {
 	

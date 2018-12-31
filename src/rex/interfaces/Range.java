@@ -1,4 +1,4 @@
-package rex.types;
+package rex.interfaces;
 
 public interface Range {
 	int start();

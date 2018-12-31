@@ -1,25 +1,28 @@
 package rex.types;
 
+import java.util.Iterator;
 import java.util.List;
 
-import rex.Matcher;
+import rex.interfaces.Lst;
+import rex.interfaces.MatchAction;
+import rex.interfaces.Spn;
+import rex.utils.Create;
+import rex.utils.Match;
 
-public class MatchResult<T> {
+public class MatchResult<T> implements Iterable<MatchResult<T>> {
 	protected boolean matched;
-	protected Lst<T> source;
-	protected Context ctx;
-	protected Matcher matcher;
+	protected MatchAction<T> action;
+	protected TContext<T> ctx;
 	
-	
-	public MatchResult(Matcher matcher, Lst<T> source) {
-		this.matched = false;
-		this.source = source;
-		this.ctx = Create.contextFrom(source);
-		this.matcher = matcher;
+	public MatchResult(MatchAction<T> action, TContext<T> ctx, boolean matched, int pos) {
+		this.matched = matched;
+		this.ctx = ctx;
+		this.action = action;
+		ctx.setPosition(pos); 
 	}
 
 	public Lst<T> source(){
-		return this.source;
+		return this.ctx.source();
 	}
 	
 	
@@ -32,13 +35,42 @@ public class MatchResult<T> {
 	}
 
 	public MatchResult<T> next() {
-		return null;
+		if(!matched()) return this;
+		TContext<T> ctx = Create.contextFrom(this.ctx.source()).setPosition(end());
+		return action.eval(ctx);
 	}
 	
+	public int start() {
+		return ctx.result().start();
+	}
 	
+	public Integer end() {
+		return ctx.result().end();
+	}
+	
+	/***
+	 * returns all occurrences of a given id
+	 */
 	public List<Capture> group(String id){
-		Stk<Capture> stk = this.result().vars();
-		
+		return Match.getAll(this.result().vars(), id);
 	}
 	
+	/***
+	 * returns the first (more recent) occurrence of a given id
+	 */
+	public Capture capture(String id) {
+		return Match.get(this.result().vars(), id);
+	}
+
+	/***
+	 * returns the span (i.e., the actual content) of a given capture
+	 */
+	public Spn<T> span(String id){
+		return capture(id).span(this.source());
+	}
+	
+	@Override
+	public Iterator<MatchResult<T>> iterator() {
+		return new MatchResultIterator<T>(this);
+	}
 }
