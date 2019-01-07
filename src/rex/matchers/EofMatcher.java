@@ -1,11 +1,11 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.interfaces.Context;
 
 public class EofMatcher extends MatcherBase{
 
 	@Override
-	public Context match(Context ctx) {
-		return ctx.getFinished()? ctx: ctx.fail();
+	public boolean match(Context ctx) {
+		return ctx.finished();
 	}
 }

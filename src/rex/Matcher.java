@@ -1,5 +1,7 @@
 package rex;
 
+import rex.interfaces.Context;
+
 public interface Matcher {
-	Context match(Context ctx);
+	boolean match(Context ctx);
 }

@@ -1,11 +1,12 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.types.ParseResult;
+import rex.types.ParseResultState;
 import rex.Matcher;
+import rex.interfaces.Context;
 
 public class RepMatcher extends ValueMatcher{
 	
-	private Matcher value;
 	private Integer min;
 	private Integer max;
 
@@ -16,24 +17,33 @@ public class RepMatcher extends ValueMatcher{
 	}
 	
 	@Override
-	public Context match(Context ctx) {
-		int p1 = ctx.getPosition();
+	public boolean match(Context ctx) {
+		ParseResult pr = ctx.result();
+		ParseResultState ps = pr.getState();
+		
+		boolean hasMin = min != null && min != 0;
+		boolean hasMax = max != null && max != 0;
+		
+		int p1 = ctx.position();
 		int count = 0;
 		while(true) {
 			int p2 = p1;
-			Context ret = value.match(ctx);
-			if(ret.getFailed()) break;
-			ctx = ret;
+			if(!value.match(ctx)) break;
 			count += 1;
-			if(max != null && count >= max) break;
-			p1 = ctx.getPosition();
+			if(hasMax && count >= max) break;
+			p1 = ctx.position();
 			if(p1 == p2) {
-				if(min == null && max == null) break;
-				if(max == null && count >= min) break;
+				if(!hasMin && !hasMax) break;
+				if(hasMin && count >= min) break;
 			};
 		}
-		if(min != null && min < count) return ctx.fail();
-		return ctx;
+		if(hasMin && count < min) {
+			//discards any variables and children
+			//built while repeating
+			pr.setState(ps);
+			return false;
+		}
+		return true;
 	}
 	
 }

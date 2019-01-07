@@ -1,13 +1,12 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.interfaces.Context;
 
 public class AnyMatcher extends MatcherBase{
 
 	@Override
-	public Context match(Context ctx) {
-		Context ret = ctx.moveNext();
-		return ret == null? ctx.fail(): ctx;
+	public boolean match(Context ctx) {
+		return ctx.moveNext();
 	}
 
 }

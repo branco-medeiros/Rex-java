@@ -1,20 +1,54 @@
 package rex;
 
+import rex.interfaces.Lst;
 import rex.tests.TestCharclass;
-import rex.types.Charclass;
+import rex.tests.TestContext;
+import rex.tests.TestRex;
+import rex.utils.Create;
 
 public class App {
 
 	public static void main(String[] args) {
-		TestCharclass.run();
-		/*
-		Context ctx = Context.from("a1B2\r\t");
-		System.out.println("[0] letter: " + (ctx.matchAt(0, Charclass.letter)? "y": "n"));
-		System.out.println("[1] digit: " + (ctx.matchAt(1, Charclass.digit)? "y": "n"));
-		System.out.println("[2] alphanum: " + (ctx.matchAt(2, Charclass.alphanum)? "y": "n"));
-		System.out.println("[3] printable: " + (ctx.matchAt(3, Charclass.printable)? "y": "n"));
-		System.out.println("[4] control: " + (ctx.matchAt(4, Charclass.control)? "y": "n"));
-		System.out.println("[5] tab: " + (ctx.matchAt(5, Charclass.tab)? "y": "n"));
-		*/
+		Lst<Character> lst = Create.lstFrom("abcdef");
+		
+		@SuppressWarnings("rawtypes")
+		Iterable it = (Iterable) lst;
+		for(Object o: it) System.out.print(o);
+		System.out.println("");
+		
+		Iterable<Character> it2 = (Iterable<Character>) lst;
+		for(Character c: it2) System.out.print(c);
+		System.out.println("");
+		
+		
+		System.out.println("Tests:");
+		System.out.println("1. Charclass");
+		System.out.println("2. Context");
+		System.out.println("3. Rex.lit");
+		System.out.println("4. Rex.opt");
+		System.out.println("5. Rex.star");
+		System.out.println("6. Rex.plus");
+		System.out.println("7. Rex.and");
+		System.out.println("8. Rex.or");
+		
+		// Scanner input = new Scanner(System.in);
+		String opt = "8"; //input.nextLine();
+		
+		System.out.println(">> " + opt);
+		switch(opt) {
+		case "1": TestCharclass.run(); break;
+		case "2": TestContext.run(); break;
+		case "3": TestRex.testLit(); break;
+		case "4": TestRex.testOpt(); break;
+		case "5": TestRex.testStar(); break;
+		case "6": TestRex.testPlus(); break;
+		case "7": TestRex.testAnd(); break;
+		case "8": TestRex.testOr(); break;
+		default:
+			System.out.println("Invalid option");
+		}
 	}
+	
+	
+	
 }
