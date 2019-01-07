@@ -14,5 +14,5 @@ public interface Stk<T> extends Lst<T> {
 	T peek(int index);
 	T swap(T newValue);
 	Node<T> getNode();
-	
+	Stk<T> clone();
 }

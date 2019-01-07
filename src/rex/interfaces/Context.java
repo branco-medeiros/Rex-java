@@ -6,7 +6,7 @@ import rex.matchers.Rule;
 import rex.types.Capture;
 import rex.types.ParseResult;
 
-public interface Context {
+public interface Context{
 	boolean finished();
 	boolean moveNext();
 	int position();
@@ -24,4 +24,5 @@ public interface Context {
 	ParseResult find(Predicate<ParseResult> fn);
 	@SuppressWarnings("rawtypes")
 	Iterable range(int start, Integer end);
+	Context clone();
 }

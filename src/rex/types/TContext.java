@@ -12,4 +12,9 @@ public class TContext<T> extends BaseContext<T> {
 		super.setPosition(pos);
 		return this;
 	}
+	
+	public TContext<T> clone() {
+		return new TContext<T>(source())
+					.setPosition(position());
+	}
 }

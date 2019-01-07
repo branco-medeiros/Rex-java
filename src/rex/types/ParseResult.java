@@ -26,6 +26,16 @@ public class ParseResult extends Capture {
 	public ParseResult(Rule rule, int start, Integer end) {
 		super(rule == null? null: rule.name(), start, end);
 	}
+	
+	public ParseResult(ParseResult other) {
+		super(null, 0, null);
+		if(other == null) throw new NullPointerException("other");
+		this.rule = other.rule();
+		this.vars = other.vars().clone();
+		this.children = other.children.clone();
+		this.matcher = other.matcher();
+		this.setStart(other.start()).setEnd(other.end());
+	}
 
 	@Override
 	public String id() {
@@ -37,12 +47,23 @@ public class ParseResult extends Capture {
 		return rule;
 	}
 	
+	
 	public Stk<Capture> vars(){
 		return vars;
 	}
 	
+	protected ParseResult setVars(Stk<Capture> value) {
+		vars = value;
+		return this;
+	}
+	
 	public Stk<ParseResult> children(){
 		return children;
+	}
+	
+	protected ParseResult setChildren(Stk<ParseResult> value) {
+		children = value;
+		return this;
 	}
 	
 	@Override
@@ -87,6 +108,10 @@ public class ParseResult extends Capture {
 		return this;
 	}
 	
+	@Override
+	public ParseResult clone(){
+		return new ParseResult(this);
+	}
 	
 	@Override
 	public String toString() {

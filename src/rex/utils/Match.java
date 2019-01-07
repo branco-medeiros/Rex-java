@@ -7,14 +7,17 @@ import java.util.List;
 import rex.Matcher;
 import rex.interfaces.Lst;
 import rex.interfaces.MatchAction;
-import rex.interfaces.Predicate;
-import rex.interfaces.Stk;
-import rex.types.Capture;
 import rex.types.MatchResult;
 import rex.types.TContext;
 
+/***
+ * Provides static methods which perform the actions exposed by rex, namely 
+ * @author branco.medeiros
+ *
+ */
 public class Match {
 
+	
 	private interface Content<T>{
 		Iterable<T> get(MatchResult<T> src);
 	}
@@ -54,46 +57,6 @@ public class Match {
 		void append(T value);
 	}
 	
-	/***
-	 * gets a list of all occurrences of a capture with the specified name;
-	 * more recent captures come first
-	 */
-	public static List<Capture> getAll(Stk<Capture> stk, String id){
-		List<Capture> result = new ArrayList<Capture>();
-		stk.each(new Predicate<Capture>() {
-			@Override
-			public Boolean eval(Capture value, int index) {
-				if(value.matches(id)) result.add(value);
-				return null;
-			}
-		});
-		return result;
-	}
-
-	public static List<Capture> getAll(Stk<Capture> stk) {
-		return getAll(stk, "");
-	}
-	
-	/***
-	 * returns the first (more recent) capture with the specified name
-	 */
-	public static Capture get(Stk<Capture> stk, String id){
-		return stk.each(new Predicate<Capture>() {
-			@Override
-			public Boolean eval(Capture value, int index) {
-				return value.matches(id);
-			}
-		});
-	}
-	
-	/***
-	 * returns the first (more recent) capture with id equal the empty string
-	 */
-	public static Capture get(Stk<Capture> stk) {
-		return get(stk, "");
-	}
-	
-
 	public static <T> MatchResult<T> find(Lst<T> src, Matcher m){
 		MatchAction<T> action = new MatchAction<T>() {
 			@Override
