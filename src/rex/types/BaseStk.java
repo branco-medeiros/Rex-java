@@ -10,7 +10,7 @@ import rex.interfaces.Spn;
 import rex.interfaces.Stk;
 import rex.utils.Create;
 
-public abstract class BaseStk<T> implements  Stk<T>{
+public abstract class BaseStk<T> implements Stk<T>{
 	
 	private Node<T> node;
 	
@@ -176,6 +176,8 @@ public abstract class BaseStk<T> implements  Stk<T>{
 		return cur;
 	}
 	
-	
+	public Stk<T> clone(){
+		throw new UnsupportedOperationException();
+	}
 	
 }

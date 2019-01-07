@@ -83,7 +83,7 @@ public class TestRex {
 	
 
 	public static void 	testStar(){
-		Test.run("PEG STAR", (t) ->{
+		Test.run("REX STAR", (t) ->{
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",
@@ -122,7 +122,7 @@ public class TestRex {
 	
 	public static void testPlus() {
 		
-		Test.run("PEG PLUS", (t) ->{;
+		Test.run("REX PLUS", (t) ->{;
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",
@@ -157,7 +157,7 @@ public class TestRex {
 	} //testPlus
 	
 	public static void testAnd() {
-		Test.run("PEG AND", (t)->{
+		Test.run("REX AND", (t)->{
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",
@@ -193,7 +193,7 @@ public class TestRex {
 	} //testAnd
 	
 	public static void testOr() {
-		Test.run("PEG OR", (t)->{
+		Test.run("REX OR", (t)->{
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",

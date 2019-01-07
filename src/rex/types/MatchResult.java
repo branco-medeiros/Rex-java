@@ -6,9 +6,29 @@ import java.util.List;
 import rex.interfaces.Lst;
 import rex.interfaces.MatchAction;
 import rex.interfaces.Spn;
+import rex.utils.Captures;
 import rex.utils.Create;
-import rex.utils.Match;
 
+/***
+ * exposes an iterface to simplify the rex usage;
+ * - source(): returns the source used in the parsing
+ * - matched(): returns true or false according to the parsing result;
+ * - result(): the actual parsing result(the rule hierachy and captures produced during parsing)
+ * - next(): returns a new MatchResult of the appropriate type executing the last operation again
+ * 			on the subject at the current position;
+ * - start(): returns the starting position of the match
+ * - end(): returns the ending position (if any) of the match
+ * - group(id): returns a list with all captures matching id
+ * - capture(id): returns the last occurrence of the the capture matching id
+ * - span(id): returns a span over the capture matching id
+ * - iterator(): returns an iterator for matchresults starting with the current one;
+ *
+ * Usage:
+ * 	//as an enumerable
+ *  for(MatchResult<Character> m: SomeGrammar.findIn(SomeText)){
+ *  	System.out.println(m.span().toString())  	
+ *	}
+ */
 public class MatchResult<T> implements Iterable<MatchResult<T>> {
 	protected boolean matched;
 	protected MatchAction<T> action;
@@ -52,14 +72,14 @@ public class MatchResult<T> implements Iterable<MatchResult<T>> {
 	 * returns all occurrences of a given id
 	 */
 	public List<Capture> group(String id){
-		return Match.getAll(this.result().vars(), id);
+		return Captures.getAll(this.result().vars(), id);
 	}
 	
 	/***
 	 * returns the first (more recent) occurrence of a given id
 	 */
 	public Capture capture(String id) {
-		return Match.get(this.result().vars(), id);
+		return Captures.get(this.result().vars(), id);
 	}
 
 	/***

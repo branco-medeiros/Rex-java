@@ -16,5 +16,11 @@ public class TStk<T> extends BaseStk<T> {
 		super();
 		this.push(value);
 	}
+	
+	@Override
+	public TStk<T> clone(){
+		return new TStk<T>(this);
+	}
+	
 
 }

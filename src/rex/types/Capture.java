@@ -24,6 +24,13 @@ public class Capture implements Range{
 		this(id, ctx.position(), null);
 	}
 	
+	public Capture(Capture other) {
+		if(other == null) throw new NullPointerException("other");
+		this.id = other.id;
+		this.start = other.start;
+		this.end = other.end;
+	}
+	
 	public String id() {
 		return this.id;
 	}
@@ -81,6 +88,10 @@ public class Capture implements Range{
 	
 	public Spn<Character> span(CharSequence src){
 		return Create.spnFrom(src, this.start, this.end);
+	}
+	
+	public Capture clone() {
+		return new Capture(id, start, end);
 	}
 
 }

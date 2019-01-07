@@ -101,4 +101,8 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 			}
 		});
 	}
+	
+	public Context clone() {
+		throw new UnsupportedOperationException();
+	}
 }

@@ -8,6 +8,10 @@ public class CharContext extends TContext<Character>{
 		super(src);
 	}
 	
+	public CharContext(CharContext other) {
+		super(other);
+	}
+	
 	@Override
 	public boolean matches(int index, Object other) {
 		Character cur = this.get(index);
@@ -19,4 +23,8 @@ public class CharContext extends TContext<Character>{
 		return other.equals(cur) || cur.equals(other);
 	}
 
+	@Override
+	public CharContext clone() {
+		return new CharContext(this);
+	}
 }
