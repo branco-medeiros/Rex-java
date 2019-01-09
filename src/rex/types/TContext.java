@@ -13,7 +13,8 @@ public class TContext<T> extends BaseContext<T> {
 		return this;
 	}
 	
-	public TContext<T> clone() {
+	@Override
+	public TContext<T> dup() {
 		return new TContext<T>(source())
 					.setPosition(position());
 	}

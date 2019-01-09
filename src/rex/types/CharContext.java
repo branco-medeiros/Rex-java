@@ -1,6 +1,7 @@
 package rex.types;
 
 import rex.interfaces.Lst;
+import rex.utils.Types;
 
 public class CharContext extends TContext<Character>{
 
@@ -14,17 +15,16 @@ public class CharContext extends TContext<Character>{
 	
 	@Override
 	public boolean matches(int index, Object other) {
-		Character cur = this.get(index);
-		if(cur == null || other == null) return false;
-		if(other instanceof String) {
-			String s = (String) other;
-			return s.length() == 1 && cur.charValue() == s.charAt(0);
-		}
-		return other.equals(cur) || cur.equals(other);
+		return super.matches(index, Types.getChar(other));
+	}
+	
+	@Override
+	public boolean inRange(int position, Object first, Object last) {
+		return super.inRange(position, Types.getChar(first), Types.getChar(last));
 	}
 
 	@Override
-	public CharContext clone() {
+	public CharContext dup() {
 		return new CharContext(this);
 	}
 }

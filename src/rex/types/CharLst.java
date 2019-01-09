@@ -3,7 +3,7 @@ package rex.types;
 import java.util.Arrays;
 import java.util.List;
 
-public class CharLst extends BaseLst<Character>{
+public class CharLst extends BaseLst<Character> implements CharSequence{
 
 	private CharSequence chars;
 	
@@ -36,5 +36,20 @@ public class CharLst extends BaseLst<Character>{
 	@Override
 	public List<Character> toList() {
 		return Arrays.asList(toArray());
+	}
+
+	@Override
+	public char charAt(int index) {
+		return chars.charAt(index);
+	}
+
+	@Override
+	public int length() {
+		return chars.length();
+	}
+
+	@Override
+	public CharSequence subSequence(int start, int end) {
+		return chars.subSequence(start,  end);
 	}
 }

@@ -29,7 +29,7 @@ public class Charclass {
 	@Override
 	public boolean equals(Object other) {
 		if(other == null) return false;
-		if(other instanceof String) return equals((String) other);
+		if(other instanceof CharSequence) return equals((CharSequence) other);
 		if(other instanceof Character) return equals((Character) other);
 		return super.equals(other);
 	}

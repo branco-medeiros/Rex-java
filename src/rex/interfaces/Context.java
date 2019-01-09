@@ -13,6 +13,9 @@ public interface Context{
 	Context setPosition(int value);
 	boolean matches(int position, Object value);
 	boolean matches(Object value);
+	boolean inRange(int position, Object first, Object last);
+	boolean inRange(Object first, Object last);
+	
 
 	ParseResult result();
 	ParseResult root();
@@ -24,5 +27,5 @@ public interface Context{
 	ParseResult find(Predicate<ParseResult> fn);
 	@SuppressWarnings("rawtypes")
 	Iterable range(int start, Integer end);
-	Context clone();
+	Context dup();
 }

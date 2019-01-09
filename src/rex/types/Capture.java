@@ -90,7 +90,7 @@ public class Capture implements Range{
 		return Create.spnFrom(src, this.start, this.end);
 	}
 	
-	public Capture clone() {
+	public Capture dup() {
 		return new Capture(id, start, end);
 	}
 

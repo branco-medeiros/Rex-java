@@ -14,29 +14,36 @@ public class ParseResult extends Capture {
 	private Rule rule;
 	private ParseResult pending;
 	private Matcher matcher;
-	private Stk<Capture> vars = Create.stk();
-	private Stk<ParseResult> children = Create.stk();
+	private Stk<Capture> vars;
+	private Stk<ParseResult> children;
 	
 	
 	public ParseResult(Rule rule, Context ctx) {
 		super(null, ctx);
 		this.rule = rule;
+		initVars();
 	}
 
 	public ParseResult(Rule rule, int start, Integer end) {
 		super(rule == null? null: rule.name(), start, end);
+		initVars();
 	}
 	
 	public ParseResult(ParseResult other) {
 		super(null, 0, null);
 		if(other == null) throw new NullPointerException("other");
 		this.rule = other.rule();
-		this.vars = other.vars().clone();
-		this.children = other.children.clone();
+		this.vars = other.vars().dup();
+		this.children = other.children.dup();
 		this.matcher = other.matcher();
 		this.setStart(other.start()).setEnd(other.end());
 	}
 
+	protected void initVars() {
+		vars = Create.stk();
+		children = Create.stk();
+	}
+	
 	@Override
 	public String id() {
 		String n = rule == null? null: rule.name();
@@ -109,7 +116,7 @@ public class ParseResult extends Capture {
 	}
 	
 	@Override
-	public ParseResult clone(){
+	public ParseResult dup(){
 		return new ParseResult(this);
 	}
 	

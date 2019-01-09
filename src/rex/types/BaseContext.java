@@ -76,6 +76,23 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	public boolean matches(Object value) {
 		return matches(this.position(), value);
 	}
+	
+	@Override
+	public boolean inRange(Object first, Object last) {
+		return inRange(position(), first, last);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean inRange(int position, Object first, Object last) {
+		T cur = get(position);
+		Comparable<T> c1 = (Comparable<T>) first;
+		Comparable<T> c2 = (Comparable<T>) last;
+		
+		if(cur == null || c1 == null || c2 == null) return false;
+		return c1.compareTo(cur) >= 0 && c2.compareTo(cur) <= 0;
+	}
 
 	@Override
 	public List<ParseResult> trace() {
@@ -102,7 +119,8 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 		});
 	}
 	
-	public Context clone() {
+	@Override
+	public Context dup() {
 		throw new UnsupportedOperationException();
 	}
 }
