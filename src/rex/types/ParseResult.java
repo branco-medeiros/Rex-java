@@ -39,16 +39,6 @@ public class ParseResult extends Capture {
 		this.setStart(other.start()).setEnd(other.end());
 	}
 
-	public ParseResult(ParseResult other) {
-		super(null, 0, null);
-		if(other == null) throw new NullPointerException("other");
-		this.rule = other.rule();
-		this.vars = other.vars().clone();
-		this.children = other.children.clone();
-		this.matcher = other.matcher();
-		this.setStart(other.start()).setEnd(other.end());
-	}
-
 	protected void initVars() {
 		vars = Create.stk();
 		children = Create.stk();

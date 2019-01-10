@@ -20,6 +20,7 @@ import rex.matchers.PrecMatcher;
 import rex.matchers.ReMatcher;
 import rex.matchers.RepMatcher;
 import rex.matchers.SeqMatcher;
+import rex.utils.Create;
 
 public class Rex {
 	
@@ -139,12 +140,21 @@ public class Rex {
 		return new Grammar();
 	}
 	
-	public static Context match(Matcher matcher, Context ctx) {
+	public static Context eval(Matcher matcher, Context ctx) {
 		if(matcher == null) throw new NullPointerException("matcher");
 		if(ctx == null) throw new NullPointerException("ctx");
 		matcher.match(ctx);
 		return ctx;
 	}
+	
+	public static Context eval(Matcher matcher, CharSequence src) {
+		return eval(matcher, Create.contextFrom(src));
+	}
+	
+	public static <T> Context eval(Matcher matcher, List<T> src) {
+		return eval(matcher, Create.contextFrom(src));
+	}
+	
 	
 	public static Context find(Matcher matcher, Context ctx) {
 		return null;
