@@ -12,7 +12,7 @@ public class TContext<T> extends BaseContext<T> {
 		super.setPosition(pos);
 		return this;
 	}
-	
+
 	@Override
 	public TContext<T> dup() {
 		return new TContext<T>(source())

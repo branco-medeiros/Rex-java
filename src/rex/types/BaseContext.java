@@ -10,11 +10,11 @@ import rex.matchers.Rule;
 import rex.utils.Create;
 
 public abstract class BaseContext<T> extends TSeq<T> implements Context{
-	
+
 	private Stk<ParseResult> result = Create.stk();
 	private ParseResult root = null;
 	private Lst<T> source;
-	
+
 	public BaseContext(Lst<T> src) {
 		super(src);
 		source = src;
@@ -25,24 +25,24 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	public Lst<T> source(){
 		return source;
 	}
-	
+
 	@Override
 	public ParseResult result(){
 		return this.result.peek();
 	}
-	
+
 	@Override
 	public ParseResult root(){
 		return root;
 	}
-	
+
 	@Override
 	public ParseResult enter(Rule rule) {
 		ParseResult r = new ParseResult(rule, this);
 		result.push(r);
 		return r;
 	}
-	
+
 	@Override
 	public ParseResult leave(boolean result) {
 		ParseResult r = this.result.pop();
@@ -50,7 +50,7 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 		if(result) prev.children().push(r);
 		return r;
 	}
-	
+
 	@Override
 	public ParseResult swap(ParseResult other){
 		if(result.count() == 0) throw new RuntimeException("can't swap at root");
@@ -76,20 +76,20 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	public boolean matches(Object value) {
 		return matches(this.position(), value);
 	}
-	
+
 	@Override
 	public boolean inRange(Object first, Object last) {
 		return inRange(position(), first, last);
 	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean inRange(int position, Object first, Object last) {
 		T cur = get(position);
 		Comparable<T> c1 = (Comparable<T>) first;
 		Comparable<T> c2 = (Comparable<T>) last;
-		
+
 		if(cur == null || c1 == null || c2 == null) return false;
 		return c1.compareTo(cur) >= 0 && c2.compareTo(cur) <= 0;
 	}
@@ -98,17 +98,17 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	public List<ParseResult> trace() {
 		return result.toList();
 	}
-	
+
 	@Override
 	public ParseResult find(Predicate<ParseResult> fn) {
 		return result.each(fn);
 	}
-	
+
 	@Override
 	public Iterable<T> range(int start, Integer end) {
 		return this.span(start, end);
 	}
-	
+
 	@Override
 	public Capture var(String id) {
 		return this.result().vars().each(new Predicate<Capture>() {
@@ -118,7 +118,7 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 			}
 		});
 	}
-	
+
 	@Override
 	public Context dup() {
 		throw new UnsupportedOperationException();

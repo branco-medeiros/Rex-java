@@ -15,7 +15,7 @@ public interface Context{
 	boolean matches(Object value);
 	boolean inRange(int position, Object first, Object last);
 	boolean inRange(Object first, Object last);
-	
+
 
 	ParseResult result();
 	ParseResult root();

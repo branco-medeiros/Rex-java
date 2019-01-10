@@ -11,24 +11,24 @@ import rex.interfaces.Stk;
 import rex.utils.Create;
 
 public abstract class BaseStk<T> implements Stk<T>{
-	
+
 	private Node<T> node;
-	
+
 	public BaseStk() {
 		//this.node = new Node<T>(null, null);
 	}
-	
+
 	public BaseStk(Stk<T> other) {
 		if(other == null) throw new NullPointerException("other");
 		Node<T> n = other.getNode();
 		this.node = n == null? null: new Node<T>(n.value, n.prev);
 	}
-	
+
 	protected int getIndex(int index) {
 		return index < 0? count() + index: index;
 	}
-	
-	
+
+
 	@Override
 	public T value() {
 		return node == null? null: node.value;
@@ -38,7 +38,7 @@ public abstract class BaseStk<T> implements Stk<T>{
 		if(node == null) node = new Node<T>(null, null);
 		return node;
 	}
-	
+
 	@Override
 	public Stk<T> setValue(T value) {
 		theNode().value = value;
@@ -85,7 +85,7 @@ public abstract class BaseStk<T> implements Stk<T>{
 		Node<T> n = findNode(index);
 		return n == null? null: n.value;
 	}
-	
+
 	@Override
 	public T swap(T newValue) {
 		T prev = this.value();
@@ -110,12 +110,12 @@ public abstract class BaseStk<T> implements Stk<T>{
 		end = end == null? count(): getIndex(end);
 		return Create.spnFrom(this, start, end);
 	}
-	
+
 	@Override
 	public Spn<T> span(Range range) {
 		return span(range.start(), range.end());
 	}
-	
+
 
 	@Override
 	public Spn<T> slice(int start, int count) {
@@ -138,7 +138,7 @@ public abstract class BaseStk<T> implements Stk<T>{
 	public Object[] toArray() {
 		return this.toList().toArray();
 	}
-	
+
 	@Override
 	public T[] toArray(T[] ref) {
 		return this.toList().toArray(ref);
@@ -153,7 +153,7 @@ public abstract class BaseStk<T> implements Stk<T>{
 	public Node<T> getNode() {
 		return node;
 	}
-	
+
 	protected Node<T> eachNode(Predicate<T> fn){
 		Node<T> cur = node;
 		while(cur != null) {
@@ -165,7 +165,7 @@ public abstract class BaseStk<T> implements Stk<T>{
 		}
 		return cur;
 	}
-	
+
 	protected Node<T> findNode(int index){
 		index = getIndex(index); if(index < 0 || index >= count()) return null;
 		Node<T> cur = node;
@@ -175,9 +175,9 @@ public abstract class BaseStk<T> implements Stk<T>{
 		}
 		return cur;
 	}
-	
+
 	public Stk<T> dup(){
 		throw new UnsupportedOperationException();
 	}
-	
+
 }

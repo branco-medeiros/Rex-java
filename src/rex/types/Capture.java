@@ -13,7 +13,7 @@ public class Capture implements Range{
 	private String id;
 	private int start;
 	private Integer end;
-	
+
 	public Capture(String id, int start, Integer end) {
 		this.id = id == null? "": id;
 		this.start = start;
@@ -23,14 +23,14 @@ public class Capture implements Range{
 	public Capture(String id, Context ctx) {
 		this(id, ctx.position(), null);
 	}
-	
+
 	public Capture(Capture other) {
 		if(other == null) throw new NullPointerException("other");
 		this.id = other.id;
 		this.start = other.start;
 		this.end = other.end;
 	}
-	
+
 	public String id() {
 		return this.id;
 	}
@@ -38,11 +38,11 @@ public class Capture implements Range{
 	public boolean matches(String id) {
 		return (id == null? "": id).equals(this.id());
 	}
-	
+
 	public boolean matchesIgnoreCase(String id) {
 		return (id == null? "": id).equalsIgnoreCase(this.id());
 	}
-	
+
 	@Override
 	public int start() {
 		return start;
@@ -52,17 +52,17 @@ public class Capture implements Range{
 		this.start = value;
 		return this;
 	}
-	
+
 	@Override
 	public Integer end() {
 		return end;
 	}
-	
+
 	public Capture setEnd(Integer value) {
 		this.end = value;
 		return this;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Capture.toString(this);
@@ -81,15 +81,15 @@ public class Capture implements Range{
 	public <T> Spn<T> span(List<T> src){
 		return Create.spnFrom(src, this.start, this.end);
 	}
-	
+
 	public <T> Spn<T> span(T[] src){
 		return Create.spnFrom(src, this.start, this.end);
 	}
-	
+
 	public Spn<Character> span(CharSequence src){
 		return Create.spnFrom(src, this.start, this.end);
 	}
-	
+
 	public Capture dup() {
 		return new Capture(id, start, end);
 	}
