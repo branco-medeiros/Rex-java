@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import rex.interfaces.Context;
+import rex.interfaces.Lst;
 import rex.matchers.AndMatcher;
 import rex.matchers.AnyMatcher;
 import rex.matchers.CapMatcher;
@@ -139,13 +140,15 @@ public class Rex {
 	public static Grammar grammar() {
 		return new Grammar();
 	}
-	
+
+	/*
 	public static Context eval(Matcher matcher, Context ctx) {
 		if(matcher == null) throw new NullPointerException("matcher");
 		if(ctx == null) throw new NullPointerException("ctx");
 		matcher.match(ctx);
 		return ctx;
 	}
+	*/
 	
 	public static Context eval(Matcher matcher, CharSequence src) {
 		return eval(matcher, Create.contextFrom(src));
@@ -155,6 +158,14 @@ public class Rex {
 		return eval(matcher, Create.contextFrom(src));
 	}
 	
+	public static <T> Context eval(Matcher matcher, Lst<T> src) {
+		if(matcher == null) throw new NullPointerException("matcher");
+		if(src == null) throw new NullPointerException("src");
+		Context ctx = (Context) src; 
+		if(ctx == null) ctx = Create.contextFrom(src);
+		matcher.match(ctx);
+		return ctx;
+	}
 	
 	public static Context find(Matcher matcher, Context ctx) {
 		return null;

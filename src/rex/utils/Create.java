@@ -1,5 +1,6 @@
 package rex.utils;
 
+import java.util.Iterator;
 import java.util.List;
 
 import rex.interfaces.Lst;
@@ -9,6 +10,7 @@ import rex.interfaces.Stk;
 import rex.types.ArrayLst;
 import rex.types.CharContext;
 import rex.types.CharLst;
+import rex.types.IteratorLst;
 import rex.types.TContext;
 import rex.types.TLst;
 import rex.types.TSeq;
@@ -29,6 +31,27 @@ public class Create {
 	
 	public static Lst<Character> lstFrom(CharSequence chars){
 		return new CharLst(chars);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> Lst<T> lstFrom(Iterable<T> iter){
+		T ref = null;
+		if(ref instanceof Character) {
+			CharSequence chars = (CharSequence) iter;
+			if(chars != null) return (Lst<T>) chars;
+		}
+		
+		List<T> list = (List<T>) iter;
+		if(list != null) return lstFrom(list);
+		
+		Lst<T> lst = (Lst<T>) iter;
+		if(lst != null) return lst;
+		
+		return new IteratorLst<>(iter);
+	}
+	
+	public static <T> Lst<T> lstFrom(Iterator<T> iter){
+		return new IteratorLst<T>(iter);
 	}
 	
 	//Spn<T>
