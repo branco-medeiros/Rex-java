@@ -2,10 +2,10 @@ package rex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
-import rex.interfaces.Context;
-import rex.interfaces.Lst;
+import rex.interfaces.MatchAction;
 import rex.matchers.AndMatcher;
 import rex.matchers.AnyMatcher;
 import rex.matchers.CapMatcher;
@@ -21,6 +21,7 @@ import rex.matchers.PrecMatcher;
 import rex.matchers.ReMatcher;
 import rex.matchers.RepMatcher;
 import rex.matchers.SeqMatcher;
+import rex.types.MatchResult;
 import rex.utils.Create;
 
 public class Rex {
@@ -106,13 +107,11 @@ public class Rex {
 		return new EofMatcher();
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static FirstOfMatcher oneof(Iterable source) {
+	public static FirstOfMatcher oneof(Iterable<?> source) {
 		return new FirstOfMatcher(source);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static SeqMatcher seq(Iterable source) {
+	public static SeqMatcher seq(Iterable<?> source) {
 		return new SeqMatcher(source);
 	}
 	
@@ -141,35 +140,63 @@ public class Rex {
 		return new Grammar();
 	}
 
-	/*
+	public static <T> Context eval(Matcher matcher, Iterable<T> src) {
+		Context ctx = Create.contextFrom(src);
+		return eval(matcher, ctx);
+	}
+	
+	public static <T> Context eval(Matcher matcher, Iterator<T> src) {
+		Context ctx = Create.contextFrom(src);
+		return eval(matcher, ctx);
+	}
+	
+	public static Context eval(Matcher matcher, CharSequence src) {
+		Context ctx = Create.contextFrom(src);
+		return eval(matcher, ctx);
+	}
+	
+	public static <T> Context eval(Matcher matcher, T[] src) {
+		Context ctx = Create.contextFrom(src);
+		return eval(matcher, ctx);
+	}
+	
 	public static Context eval(Matcher matcher, Context ctx) {
 		if(matcher == null) throw new NullPointerException("matcher");
 		if(ctx == null) throw new NullPointerException("ctx");
 		matcher.match(ctx);
 		return ctx;
 	}
-	*/
 	
-	public static Context eval(Matcher matcher, CharSequence src) {
-		return eval(matcher, Create.contextFrom(src));
+	public static Match find(Matcher matcher, Context ctx) {
+		MatchAction action = new MatchAction() {
+			@Override
+			public Match eval(Context ctx) {
+				while(!ctx.finished()) {
+					int pos = ctx.position();
+					if(matcher.match(ctx)) {
+						return new MatchResult(this, ctx, true, pos);
+					}
+					ctx.setPosition(pos).moveNext();
+				}
+				return new MatchResult(this, ctx, false, ctx.position());
+			}
+		};
+		return action.eval(ctx);
 	}
 	
-	public static <T> Context eval(Matcher matcher, List<T> src) {
-		return eval(matcher, Create.contextFrom(src));
+	public static List<Match> findAll(Matcher matcher, Context ctx){
+		List<Match> result = new ArrayList<Match>();
+		for(Match m: find(matcher, ctx)) {
+			result.add(m);
+		}
+		return result;
 	}
 	
-	public static <T> Context eval(Matcher matcher, Lst<T> src) {
-		if(matcher == null) throw new NullPointerException("matcher");
-		if(src == null) throw new NullPointerException("src");
-		Context ctx = (Context) src; 
-		if(ctx == null) ctx = Create.contextFrom(src);
-		matcher.match(ctx);
-		return ctx;
-	}
-	
-	public static Context find(Matcher matcher, Context ctx) {
+	public CharSequence replace(
+		Matcher matcher, 
+		CharSequence chars, 
+		Iterable<Character>... values
+	) {
 		return null;
 	}
-	
-	
 }

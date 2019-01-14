@@ -1,6 +1,6 @@
 package rex.matchers;
 
-import rex.interfaces.Context;
+import rex.Context;
 
 public class EpsMatcher extends MatcherBase{
 

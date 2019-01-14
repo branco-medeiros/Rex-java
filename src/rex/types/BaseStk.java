@@ -176,7 +176,7 @@ public abstract class BaseStk<T> implements Stk<T>{
 		return cur;
 	}
 
-	public Stk<T> dup(){
+	public Stk<T> getClone(){
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,6 +1,6 @@
 package rex.matchers;
 
-import rex.interfaces.Context;
+import rex.Context;
 
 public class SeqMatcher extends IterableMatcher{
 
@@ -11,14 +11,14 @@ public class SeqMatcher extends IterableMatcher{
 	
 	@Override
 	public boolean match(Context ctx) {
-		return matchIt(ctx, items);
+		return match(ctx, items);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static boolean matchIt(Context ctx, Iterable items) {
+	public static boolean match(Context ctx, Iterable<?> items) {
 		int count = 0;
 		for(Object cur: items) {
-			if(!ctx.matches(cur)) return false;
+			if(ctx.finished() || !ctx.matches(cur)) return false;
+			ctx.moveNext();
 			count += 1;
 		}
 		return count > 0;

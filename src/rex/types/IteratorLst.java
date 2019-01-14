@@ -20,7 +20,7 @@ public class IteratorLst<T> extends BaseLst<T> {
 	}
 
 	@Override
-	public T get(int index) {
+	protected T getAt(int index) {
 		int max = cache.size();
 		if(index >= max) {
 			while(src.hasNext()) {
@@ -39,5 +39,7 @@ public class IteratorLst<T> extends BaseLst<T> {
 		while(get(max) != null) max += 1;
 		return max;
 	}
+	
+	
 
 }

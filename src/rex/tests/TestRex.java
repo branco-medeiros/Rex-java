@@ -1,8 +1,8 @@
 package rex.tests;
 
+import rex.Context;
 import rex.Matcher;
 import rex.Rex;
-import rex.interfaces.Context;
 import rex.testing.Test;
 import rex.types.Charclass;
 import rex.utils.Create;

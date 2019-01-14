@@ -2,7 +2,7 @@ package rex.types;
 
 import java.util.List;
 
-import rex.interfaces.Context;
+import rex.Context;
 import rex.interfaces.Lst;
 import rex.interfaces.Range;
 import rex.interfaces.Spn;
@@ -13,24 +13,32 @@ public class Capture implements Range{
 	private String id;
 	private int start;
 	private Integer end;
-
-	public Capture(String id, int start, Integer end) {
+	private Context ctx;
+	
+	public Capture(String id, Context ctx, int start, Integer end) {
+		if(ctx == null) throw new NullPointerException("ctx");
 		this.id = id == null? "": id;
 		this.start = start;
 		this.end = end;
+		this.ctx = ctx;
 	}
 
 	public Capture(String id, Context ctx) {
-		this(id, ctx.position(), null);
+		this(id, ctx, ctx.position(), null);
 	}
 
 	public Capture(Capture other) {
 		if(other == null) throw new NullPointerException("other");
 		this.id = other.id;
+		this.ctx = other.ctx;
 		this.start = other.start;
-		this.end = other.end;
+		this.end = other.end == null? null: other.end.intValue();
 	}
 
+	public Context ctx() {
+		return this.ctx;
+	}
+	
 	public String id() {
 		return this.id;
 	}
@@ -90,8 +98,8 @@ public class Capture implements Range{
 		return Create.spnFrom(src, this.start, this.end);
 	}
 
-	public Capture dup() {
-		return new Capture(id, start, end);
+	public Capture getClone() {
+		return new Capture(this);
 	}
 
 }

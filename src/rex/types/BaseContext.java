@@ -2,9 +2,11 @@ package rex.types;
 
 import java.util.List;
 
-import rex.interfaces.Context;
+import rex.Context;
+import rex.Match;
+import rex.Matcher;
+import rex.Rex;
 import rex.interfaces.Lst;
-import rex.interfaces.Predicate;
 import rex.interfaces.Stk;
 import rex.matchers.Rule;
 import rex.utils.Create;
@@ -32,11 +34,6 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	}
 
 	@Override
-	public ParseResult root(){
-		return root;
-	}
-
-	@Override
 	public ParseResult enter(Rule rule) {
 		ParseResult r = new ParseResult(rule, this);
 		result.push(r);
@@ -51,6 +48,7 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 		return r;
 	}
 
+	/*
 	@Override
 	public ParseResult swap(ParseResult other){
 		if(result.count() == 0) throw new RuntimeException("can't swap at root");
@@ -58,6 +56,7 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 		return result.swap(other);
 	}
 
+*/
 	@Override
 	public BaseContext<T> setPosition(int value) {
 		super.setPosition(value);
@@ -95,20 +94,11 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	}
 
 	@Override
-	public List<ParseResult> trace() {
-		return result.toList();
-	}
-
-	@Override
-	public ParseResult find(Predicate<ParseResult> fn) {
-		return result.each(fn);
-	}
-
-	@Override
 	public Iterable<T> range(int start, Integer end) {
 		return this.span(start, end);
 	}
 
+	/*
 	@Override
 	public Capture var(String id) {
 		return this.result().vars().each(new Predicate<Capture>() {
@@ -118,9 +108,28 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 			}
 		});
 	}
-
+	*/
+	
 	@Override
-	public Context dup() {
+	public Context getClone() {
 		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public Context eval(Matcher matcher) {
+		if(matcher == null) throw new NullPointerException("matcher");
+		matcher.match(this);
+		return this;
+	}
+	
+	
+	@Override
+	public Match find(Matcher matcher) {
+		return Rex.find(matcher, this);
+	} //find
+	
+	@Override
+	public List<Match> findAll(Matcher matcher) {
+		return Rex.findAll(matcher, this);
 	}
 }

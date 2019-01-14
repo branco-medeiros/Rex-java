@@ -1,5 +1,6 @@
 package rex.types;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,8 +14,7 @@ public class ArrayLst<T> extends BaseLst<T>  {
 	}
 	
 	@Override
-	public T get(int index) {
-		index = getIndex(index);
+	protected T getAt(int index) {
 		return list[index];
 	}
 
@@ -31,6 +31,16 @@ public class ArrayLst<T> extends BaseLst<T>  {
 	@Override
 	public List<T> toList() {
 		return Arrays.asList(this.toArray());
+	}
+	
+	@Override
+	public Iterable<T> range(int start, Integer end) {
+		List<T> ret = new ArrayList<>();
+		int max = end == null? count(): end.intValue();
+		if(max > start) {
+			for(int i = start; i < max; ++i) ret.add(list[i]);
+		}
+		return ret;
 	}
 	
 

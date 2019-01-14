@@ -12,7 +12,6 @@ import rex.types.TContext;
 
 /***
  * Provides static methods which perform the actions exposed by rex, namely 
- * @author branco.medeiros
  *
  */
 public class Match {
@@ -55,33 +54,6 @@ public class Match {
 	
 	private interface Builder<T>{
 		void append(T value);
-	}
-	
-	public static <T> MatchResult<T> find(Lst<T> src, Matcher m){
-		MatchAction<T> action = new MatchAction<T>() {
-			@Override
-			public MatchResult<T> eval(TContext<T> ctx) {
-				while(!ctx.finished()) {
-					int pos = ctx.position();
-					if(m.match(ctx)) {
-						return new MatchResult<T>(this, ctx, true, pos);
-					}
-					ctx.setPosition(pos).moveNext();
-				}
-				
-				return new MatchResult<T>(this, ctx, false, ctx.position());
-			}
-		};
-		
-		return action.eval(Create.contextFrom(src));
-	}
-	
-	public static <T> List<MatchResult<T>> findAll(Lst<T> src, Matcher m){
-		List<MatchResult<T>> result = new ArrayList<MatchResult<T>>();
-		for(MatchResult<T> mr: find(src, m)) {
-			result.add(mr);
-		}
-		return result;
 	}
 	
 	

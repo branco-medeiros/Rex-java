@@ -1,6 +1,6 @@
 package rex.matchers;
 
-import rex.interfaces.Context;
+import rex.Context;
 import rex.interfaces.ContextAction;
 
 public class FnMatcher extends MatcherBase {

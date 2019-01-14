@@ -1,8 +1,8 @@
 package rex.interfaces;
 
-import rex.types.MatchResult;
-import rex.types.TContext;
+import rex.Context;
+import rex.Match;
 
-public interface MatchAction<T> extends Action<TContext<T>, MatchResult<T>> {
+public interface MatchAction extends Action<Context, Match> {
 	
 }

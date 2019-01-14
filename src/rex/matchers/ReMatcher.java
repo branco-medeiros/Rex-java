@@ -1,6 +1,6 @@
 package rex.matchers;
 
-import rex.interfaces.Context;
+import rex.Context;
 import rex.types.Capture;
 
 public class ReMatcher extends MatcherBase{
@@ -18,10 +18,10 @@ public class ReMatcher extends MatcherBase{
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean match(Context ctx) {
-		Capture cap = ctx.var(id);
+		Capture cap = ctx.result().var(id);
 		if(cap == null) return false;
 		Iterable iter = ctx.range(cap.start(), cap.end());
-		return SeqMatcher.matchIt(ctx, iter);
+		return SeqMatcher.match(ctx, iter);
 	}
 	
 

@@ -3,8 +3,8 @@ package rex.matchers;
 import java.util.ArrayList;
 import java.util.List;
 
+import rex.Context;
 import rex.Matcher;
-import rex.interfaces.Context;
 import rex.interfaces.Predicate;
 import rex.types.ParseResult;
 

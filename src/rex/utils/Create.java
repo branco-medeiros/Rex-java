@@ -3,12 +3,14 @@ package rex.utils;
 import java.util.Iterator;
 import java.util.List;
 
+import rex.Context;
 import rex.interfaces.Lst;
+import rex.interfaces.Range;
 import rex.interfaces.Seq;
 import rex.interfaces.Spn;
 import rex.interfaces.Stk;
 import rex.types.ArrayLst;
-import rex.types.CharContext;
+import rex.types.BaseRange;
 import rex.types.CharLst;
 import rex.types.IteratorLst;
 import rex.types.TContext;
@@ -21,6 +23,10 @@ public class Create {
 
 	// Lst<T>
 	
+	public static <T> Lst<T> lstFrom(Lst<T> list){
+		return list;
+	}
+
 	public static <T> Lst<T> lstFrom(List<T> list){
 		return new TLst<T>(list);
 	}
@@ -33,19 +39,12 @@ public class Create {
 		return new CharLst(chars);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static <T> Lst<T> lstFrom(Iterable<T> iter){
-		T ref = null;
-		if(ref instanceof Character) {
-			CharSequence chars = (CharSequence) iter;
-			if(chars != null) return (Lst<T>) chars;
-		}
+		Lst<T> lst = (Lst<T>) iter;
+		if(lst != null) return lst;
 		
 		List<T> list = (List<T>) iter;
 		if(list != null) return lstFrom(list);
-		
-		Lst<T> lst = (Lst<T>) iter;
-		if(lst != null) return lst;
 		
 		return new IteratorLst<>(iter);
 	}
@@ -56,38 +55,46 @@ public class Create {
 	
 	//Spn<T>
 	
-	public static <T> Spn<T> spnFrom(Lst<T> list, int start, Integer end){
-		return new TSpn<T>(list, start, end);
+	public static <T> Spn<T> spnFrom(Lst<T> other, int start, Integer end){
+		return new TSpn<T>(other, start, end);
 	}
 	
-	public static <T> Spn<T> spnFrom(List<T> list, int start, Integer end){
-		return new TSpn<T>(lstFrom(list), start, end);
+	public static <T> Spn<T> spnFrom(Iterable<T> other, int start, Integer end){
+		return new TSpn<T>(lstFrom(other), start, end);
+	}
+	
+	public static <T> Spn<T> spnFrom(Iterator<T> other, int start, Integer end){
+		return new TSpn<T>(lstFrom(other), start, end);
 	}
 	
 	public static <T> Spn<T> spnFrom(T[] list, int start, Integer end){
 		return new TSpn<T>(lstFrom(list), start, end);
 	}
 	
-	public static Spn<Character> spnFrom(CharSequence chars, int start, Integer end){
-		return new TSpn<Character>(lstFrom(chars), start, end);
+	public static Spn<Character> spnFrom(CharSequence list, int start, Integer end){
+		return new TSpn<Character>(lstFrom(list), start, end);
 	}
 	
 	//Seq<T>
 	
-	public static <T> Seq<T> seqFrom(Lst<T> list){
-		return new TSeq<T>(list);
+	public static <T> Seq<T> seqFrom(Lst<T> other){
+		return new TSeq<T>(other);
+	}
+
+	public static <T> Seq<T> seqFrom(T[] other){
+		return new TSeq<T>(lstFrom(other));
+	}
+
+	public static <T> Seq<T> seqFrom(Iterable<T> other){
+		return new TSeq<T>(lstFrom(other));
+	}
+
+	public static <T> Seq<T> seqFrom(Iterator<T> other){
+		return new TSeq<T>(lstFrom(other));
 	}
 	
-	public static <T> Seq<T> seqFrom(List<T> list){
-		return new TSeq<T>(lstFrom(list));
-	}
-	
-	public static <T> Seq<T> seqFrom(T[] list){
-		return new TSeq<T>(lstFrom(list));
-	}
-	
-	public static Seq<Character> seqFrom(CharSequence chars){
-		return new TSeq<Character>(lstFrom(chars));
+	public static Seq<Character> seqFrom(CharSequence other){
+		return new TSeq<Character>(lstFrom(other));
 	}
 	
 	
@@ -108,16 +115,35 @@ public class Create {
 	
 	//ContextT<T>
 	
-	public static <T> TContext<T> contextFrom(List<T> list){
-		return new TContext<T>(lstFrom(list));
+	public static Context contextFrom(Context other){
+		return other;
 	}
 	
-	public static TContext<Character> contextFrom(CharSequence list){
-		return new CharContext(lstFrom(list));
+	public static Context contextFrom(CharSequence other){
+		return new TContext<Character>(lstFrom(other));
 	}
 	
-	public static <T> TContext<T> contextFrom(Lst<T> list){
-		return new TContext<T>(list);
+	public static <T> Context contextFrom(Iterable<T> other){
+		TContext<T> ctx = (TContext<T>) other;
+		if(ctx != null) return ctx;
+		
+		return new TContext<T>(lstFrom(other));
+	}
+	
+	public static <T> Context contextFrom(Iterator<T> other){
+		TContext<T> ctx = (TContext<T>) other;
+		if(ctx != null) return ctx;
+		
+		return new TContext<T>(lstFrom(other));
+	}
+
+	public static <T> Context contextFrom(T[] other){
+		return new TContext<T>(lstFrom(other));
+	}
+	
+	
+	public static Range range(int start, Integer end) {
+		return new BaseRange(start, end);
 	}
 	
 	

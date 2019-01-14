@@ -1,8 +1,8 @@
 package rex.matchers;
 
 import rex.types.ParseResultState;
+import rex.Context;
 import rex.Matcher;
-import rex.interfaces.Context;
 
 public class IsMatcher extends ValueMatcher{
 	

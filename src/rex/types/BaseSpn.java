@@ -35,10 +35,9 @@ public abstract class BaseSpn<T> extends BaseLst<T> implements Spn<T> {
 	}
 
 	@Override
-	public T get(int index) {
+	protected T getAt(int index) {
 		if(src == null) return null;
-		index = getIndex(index);
-		return (index < 0 || index > count())? null: src.get(start+index);
+		return src.get(start+index);
 	}
 
 	@Override

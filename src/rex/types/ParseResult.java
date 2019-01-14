@@ -1,12 +1,14 @@
 package rex.types;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import rex.Context;
 import rex.Matcher;
-import rex.interfaces.Context;
 import rex.interfaces.Stk;
 import rex.matchers.Rule;
+import rex.utils.Captures;
 import rex.utils.Create;
 
 public class ParseResult extends Capture {
@@ -24,19 +26,18 @@ public class ParseResult extends Capture {
 		initVars();
 	}
 
-	public ParseResult(Rule rule, int start, Integer end) {
-		super(rule == null? null: rule.name(), start, end);
+	public ParseResult(Rule rule, Context ctx, int start, Integer end) {
+		super(null, ctx, start, end);
+		this.rule = rule;
 		initVars();
 	}
 
 	public ParseResult(ParseResult other) {
-		super(null, 0, null);
-		if(other == null) throw new NullPointerException("other");
+		super(other);
 		this.rule = other.rule();
-		this.vars = other.vars().dup();
-		this.children = other.children.dup();
+		this.vars = other.vars().getClone();
+		this.children = other.children.getClone();
 		this.matcher = other.matcher();
-		this.setStart(other.start()).setEnd(other.end());
 	}
 
 	protected void initVars() {
@@ -58,6 +59,15 @@ public class ParseResult extends Capture {
 	public Stk<Capture> vars(){
 		return vars;
 	}
+	
+	public Capture var(String id) {
+		return Captures.get(this.vars, id);
+	}
+	
+	public List<Capture> vars(String id) {
+		return Captures.getAll(this.vars, id);
+	}
+	
 
 	protected ParseResult setVars(Stk<Capture> value) {
 		vars = value;
@@ -116,7 +126,7 @@ public class ParseResult extends Capture {
 	}
 
 	@Override
-	public ParseResult dup(){
+	public ParseResult getClone(){
 		return new ParseResult(this);
 	}
 

@@ -18,7 +18,7 @@ public class TStk<T> extends BaseStk<T> {
 	}
 
 	@Override
-	public TStk<T> dup(){
+	public TStk<T> getClone(){
 		return new TStk<T>(this);
 	}
 

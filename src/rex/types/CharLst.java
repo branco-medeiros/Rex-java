@@ -13,9 +13,9 @@ public class CharLst extends BaseLst<Character> implements CharSequence{
 	}
 	
 	@Override
-	public Character get(int index) {
-		if(index < 0 || index >= count()) return null;
-		return chars.charAt(getIndex(index));
+	protected Character getAt(int index) {
+		if(index >= count()) return null;
+		return chars.charAt(index);
 	}
 
 	@Override
@@ -52,4 +52,5 @@ public class CharLst extends BaseLst<Character> implements CharSequence{
 	public CharSequence subSequence(int start, int end) {
 		return chars.subSequence(start,  end);
 	}
+	
 }

@@ -1,9 +1,8 @@
-package rex.interfaces;
+package rex;
 
 import java.util.List;
 
 import rex.matchers.Rule;
-import rex.types.Capture;
 import rex.types.ParseResult;
 
 public interface Context{
@@ -18,14 +17,16 @@ public interface Context{
 
 
 	ParseResult result();
-	ParseResult root();
-	Capture var(String id);
 	ParseResult enter(Rule rule);
 	ParseResult leave(boolean Result);
-	ParseResult swap(ParseResult other);
-	List<ParseResult> trace();
-	ParseResult find(Predicate<ParseResult> fn);
-	@SuppressWarnings("rawtypes")
-	Iterable range(int start, Integer end);
-	Context dup();
+	
+	Iterable<?> range(int start, Integer end);
+	
+	Context getClone();
+	
+	Match find(Matcher matcher);
+	List<Match> findAll(Matcher matcher);
+	
+	Context eval(Matcher matcher);
+	
 }

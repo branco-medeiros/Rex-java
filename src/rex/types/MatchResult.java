@@ -3,14 +3,13 @@ package rex.types;
 import java.util.Iterator;
 import java.util.List;
 
-import rex.interfaces.Lst;
+import rex.Context;
+import rex.Match;
 import rex.interfaces.MatchAction;
-import rex.interfaces.Spn;
 import rex.utils.Captures;
-import rex.utils.Create;
 
 /***
- * exposes an iterface to simplify the rex usage;
+ * returned from rex.find; can be used interactively to continue the search;
  * - source(): returns the source used in the parsing
  * - matched(): returns true or false according to the parsing result;
  * - result(): the actual parsing result(the rule hierachy and captures produced during parsing)
@@ -29,23 +28,18 @@ import rex.utils.Create;
  *  	System.out.println(m.span().toString())  	
  *	}
  */
-public class MatchResult<T> implements Iterable<MatchResult<T>> {
+public class MatchResult implements Match {
 	protected boolean matched;
-	protected MatchAction<T> action;
-	protected TContext<T> ctx;
+	protected MatchAction action;
+	protected Context ctx;
 	
-	public MatchResult(MatchAction<T> action, TContext<T> ctx, boolean matched, int pos) {
+	public MatchResult(MatchAction action, Context ctx, boolean matched, int pos) {
 		this.matched = matched;
 		this.ctx = ctx;
 		this.action = action;
 		ctx.setPosition(pos); 
 	}
 
-	public Lst<T> source(){
-		return this.ctx.source();
-	}
-	
-	
 	public boolean matched() {
 		return matched;
 	}
@@ -54,9 +48,9 @@ public class MatchResult<T> implements Iterable<MatchResult<T>> {
 		return ctx.result();
 	}
 
-	public MatchResult<T> next() {
+	public Match next() {
 		if(!matched()) return this;
-		TContext<T> ctx = Create.contextFrom(this.ctx.source()).setPosition(end());
+		Context ctx = this.ctx.getClone().setPosition(end());
 		return action.eval(ctx);
 	}
 	
@@ -81,16 +75,13 @@ public class MatchResult<T> implements Iterable<MatchResult<T>> {
 	public Capture capture(String id) {
 		return Captures.get(this.result().vars(), id);
 	}
-
-	/***
-	 * returns the span (i.e., the actual content) of a given capture
-	 */
-	public Spn<T> span(String id){
-		return capture(id).span(this.source());
-	}
 	
 	@Override
-	public Iterator<MatchResult<T>> iterator() {
-		return new MatchResultIterator<T>(this);
+	public Iterator<Match> iterator() {
+		return new MatchIterator(this);
+	}
+	
+	public static MatchResult fail(Context ctx) {
+		return new MatchResult(null, ctx, false, ctx.position());
 	}
 }

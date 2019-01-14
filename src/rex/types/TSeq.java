@@ -17,7 +17,7 @@ public class TSeq<T> extends BaseSeq<T> {
 	}
 
 	@Override
-	public T get(int index) {
+	protected T getAt(int index) {
 		return lst.get(index);
 	}
 

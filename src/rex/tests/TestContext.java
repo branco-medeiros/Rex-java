@@ -1,6 +1,6 @@
 package rex.tests;
 
-import rex.interfaces.Context;
+import rex.Context;
 import rex.matchers.Rule;
 import rex.testing.Test;
 import rex.types.ParseResult;

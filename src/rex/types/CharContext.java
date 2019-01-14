@@ -22,9 +22,9 @@ public class CharContext extends TContext<Character>{
 	public boolean inRange(int position, Object first, Object last) {
 		return super.inRange(position, Types.getChar(first), Types.getChar(last));
 	}
-
+	
 	@Override
-	public CharContext dup() {
+	public CharContext getClone() {
 		return new CharContext(this);
 	}
 }
