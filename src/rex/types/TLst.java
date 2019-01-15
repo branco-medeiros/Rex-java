@@ -3,8 +3,6 @@ package rex.types;
 import java.util.Iterator;
 import java.util.List;
 
-import rex.interfaces.Range;
-
 public class TLst<T> extends BaseLst<T>{
 
 	private List<T> list;
@@ -34,9 +32,5 @@ public class TLst<T> extends BaseLst<T>{
 		return list;
 	}
 	
-	@Override
-	protected Iterable<T> getRange(Range limit) {
-		return list.subList(limit.start(), limit.end());
-	}
 
 }

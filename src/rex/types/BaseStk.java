@@ -9,6 +9,7 @@ import rex.interfaces.Range;
 import rex.interfaces.Spn;
 import rex.interfaces.Stk;
 import rex.utils.Create;
+import rex.utils.Types;
 
 public abstract class BaseStk<T> implements Stk<T>{
 
@@ -25,7 +26,7 @@ public abstract class BaseStk<T> implements Stk<T>{
 	}
 
 	protected int getIndex(int index) {
-		return index < 0? count() + index: index;
+		return Types.getIndex(index, count());
 	}
 
 
@@ -180,4 +181,31 @@ public abstract class BaseStk<T> implements Stk<T>{
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public Iterable<T> range(Range limit) {
+		return range(limit.start(), limit.end());
+	}
+
+	@Override
+	public Iterable<T> range(int start, Integer end) {
+		int max = count();
+		int first = Math.max(Types.inRange(0,  max, start), max-1);
+		int last = Types.inRange(0, max, end);
+		int total = last - first;
+		if(total <= 0) return new ArrayList<>();
+		List<T> ret = new ArrayList<T>(total);
+		each(new Predicate<T>() {
+			@Override
+			public Boolean eval(T value, int index) {
+				if(index < first) return true;
+				if(index < last) {
+					ret.set(index - first, value);
+				};
+				return false;
+			}
+		});
+		return ret;
+	}
+
+	
 }

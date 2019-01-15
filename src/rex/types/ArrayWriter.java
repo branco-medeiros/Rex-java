@@ -16,6 +16,10 @@ public class ArrayWriter<T> implements Writer<T[], T> {
 		this.refClass = refClass;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ArrayWriter(T[] ref) {
+		this((Class<T>) ref.getClass().getComponentType());
+	}
 	
 	@Override
 	public Writer<T[], T> write(Iterable<T> values) {
@@ -23,6 +27,12 @@ public class ArrayWriter<T> implements Writer<T[], T> {
 		return this;
 	}
 
+	@Override
+	public Writer<T[], T> append(T value) {
+		result.add(value);
+		return this;
+	}
+	
 	@Override
 	public T[] getValue() {
 		@SuppressWarnings("unchecked")

@@ -11,6 +11,12 @@ public class CharSequenceWriter implements Writer<CharSequence, Character>{
 		for(Character c: values)  sb.append(c);
 		return this;
 	}
+	
+	@Override
+	public Writer<CharSequence, Character> append(Character value) {
+		sb.append(value);
+		return this;
+	}
 
 	@Override
 	public CharSequence getValue() {

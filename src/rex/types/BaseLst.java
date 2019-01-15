@@ -10,6 +10,7 @@ import rex.interfaces.Predicate;
 import rex.interfaces.Range;
 import rex.interfaces.Spn;
 import rex.utils.Create;
+import rex.utils.Types;
 
 public abstract class BaseLst<T> implements Lst<T>{
 
@@ -24,12 +25,12 @@ public abstract class BaseLst<T> implements Lst<T>{
 	protected abstract T getAt(int i);
 	
 	protected int getIndex(int index) {
-		return index < 0? count() + index: index;
+		return index >= 0? index : Types.getIndex(index, count());
 	}
 	
 	@Override
 	public T get(int index) {
-		index = getIndex(index); if(index < 0) return null;
+		index = getIndex(index);
 		return getAt(index);
 	}
 	
@@ -46,8 +47,10 @@ public abstract class BaseLst<T> implements Lst<T>{
 
 	@Override
 	public Spn<T> span(Range range) {
-		range = normalize(range);
-		return new TSpn<T>(this, range.start(), range.end());
+		int max = count();
+		int start = Types.inRange(0, max, range.start());
+		int end = Types.inRange(0,  max, range.end());
+		return new TSpn<T>(this, start, end);
 	}
 	
 	@Override
@@ -86,35 +89,17 @@ public abstract class BaseLst<T> implements Lst<T>{
 	
 	@Override
 	public Iterable<T> range(Range limit) {
-		return getRange(normalize(limit));
+		return range(limit.start(), limit.end());
 	}
 	
 	@Override
 	public Iterable<T> range(int start, Integer end) {
-		return range(Create.range(start, end));
-	}
-	
-	protected Iterable<T> getRange(Range limit) {
-		int start = limit.start();
-		int end = limit.end();
+		int max = count();
+		int first = Types.inMinRange(0, max, start);
+		int last = Types.inRange(0, max, end);
 		List<T> ret = new ArrayList<>();
-		for(int i=start; i < end; ++i) ret.add(get(i));
+		for(int i=first; i < last; ++i) ret.add(get(i));
 		return ret;
 	}
 	
-	protected Range normalize(int start, Integer end) {
-		return normalize(Create.range(start, end));
-	}
-	
-	protected Range normalize(Range value) {
-		int start = value.start();
-		int cnt = count();
-		Integer end = value.end();
-		int max = cnt;
-		if(start >= 0 && end != null && end <= cnt) return value;
-		start = Math.min(Math.max(0, getIndex(start)),  cnt-1);
-		max = end == null? cnt: Math.min(Math.max(0, getIndex(end)),  cnt);
-		return Create.range(start, max);
-	}
-
 }

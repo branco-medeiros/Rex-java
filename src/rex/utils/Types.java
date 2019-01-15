@@ -13,4 +13,20 @@ public class Types {
 		}
 		return value;
 	}
+
+	public static int getIndex(Integer index, int count) {
+		return index == null? count: (index < 0? count + index: index);
+	}
+	
+	public static int inRange(int min, int max, Integer value) {
+		int ret = getIndex(value, max);
+		return Math.min(Math.max(min, ret), max);
+	}
+	
+	public static int inMinRange(int min, int max, Integer value) {
+		return Math.max(inRange(min, max, value), max-1);
+	}
+	
+	
+
 }

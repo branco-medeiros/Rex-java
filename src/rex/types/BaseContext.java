@@ -29,6 +29,11 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 	}
 
 	@Override
+	public ParseResult root() {
+		return root;
+	}
+	
+	@Override
 	public ParseResult result(){
 		return this.result.peek();
 	}
@@ -47,16 +52,13 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 		if(result) prev.children().push(r);
 		return r;
 	}
-
-	/*
+	
 	@Override
-	public ParseResult swap(ParseResult other){
-		if(result.count() == 0) throw new RuntimeException("can't swap at root");
-		if(other == null) throw new NullPointerException("other");
-		return result.swap(other);
+	public Stk<ParseResult> trace() {
+		return result;
 	}
 
-*/
+
 	@Override
 	public BaseContext<T> setPosition(int value) {
 		super.setPosition(value);
@@ -115,21 +117,4 @@ public abstract class BaseContext<T> extends TSeq<T> implements Context{
 		throw new UnsupportedOperationException();
 	}
 	
-	@Override
-	public Context eval(Matcher matcher) {
-		if(matcher == null) throw new NullPointerException("matcher");
-		matcher.match(this);
-		return this;
-	}
-	
-	
-	@Override
-	public Match find(Matcher matcher) {
-		return Rex.find(matcher, this);
-	} //find
-	
-	@Override
-	public List<Match> findAll(Matcher matcher) {
-		return Rex.findAll(matcher, this);
-	}
 }

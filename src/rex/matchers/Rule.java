@@ -72,12 +72,13 @@ public class Rule extends ListMatcher implements Matcher{
 		return setBody(value);
 	}
 	
+	
 	protected ParseResult findLeftContext(Context ctx) {
 		//finds a previous occurrence of this rule that is still
 		//being processed
 		int pos = ctx.position();
 		final Rule rule = this;
-		ParseResult prev = ctx.find(new Predicate<ParseResult>() {
+		ParseResult prev = ctx.trace().each(new Predicate<ParseResult>() {
 			@Override
 			public Boolean eval(ParseResult value, int index) {
 				return value.rule() == rule && value.start() == pos;
@@ -124,7 +125,7 @@ public class Rule extends ListMatcher implements Matcher{
 			while(matched) {
 				ParseResult cur = new ParseResult(this, ctx).setPending(result);
 				matched = false;
-				ctx.swap(cur);
+				ctx.trace().swap(cur);
 				for(Matcher m: list) {
 					PrecMatcher pm = (PrecMatcher) m;
 					if(pm == null || pm.precedence() <= prec) continue;
@@ -142,7 +143,7 @@ public class Rule extends ListMatcher implements Matcher{
 					
 				} else {
 					ctx.setPosition(result.end());
-					ctx.swap(result);
+					ctx.trace().swap(result);
 					
 				}
 			} //while

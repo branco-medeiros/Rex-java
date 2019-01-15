@@ -15,6 +15,12 @@ public class ListWriter<T> implements Writer<List<T>, T> {
 		return this;
 	}
 
+@Override
+	public Writer<List<T>, T> append(T value) {
+	result.add(value);
+		return this;
+	}	
+
 	@Override
 	public List<T> getValue() {
 		return result;

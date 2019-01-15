@@ -14,7 +14,7 @@ public class CharLst extends BaseLst<Character> implements CharSequence{
 	
 	@Override
 	protected Character getAt(int index) {
-		if(index >= count()) return null;
+		if(index < 0 || index >= count()) return null;
 		return chars.charAt(index);
 	}
 

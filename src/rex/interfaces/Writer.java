@@ -5,5 +5,6 @@ package rex.interfaces;
  */
 public interface Writer<L, T> {
 	Writer<L, T> write(Iterable<T> values);
+	Writer<L, T> append(T value);
 	L getValue();
 }
