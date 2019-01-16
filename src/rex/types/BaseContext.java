@@ -1,11 +1,6 @@
 package rex.types;
 
-import java.util.List;
-
 import rex.Context;
-import rex.Match;
-import rex.Matcher;
-import rex.Rex;
 import rex.interfaces.Lst;
 import rex.interfaces.Stk;
 import rex.matchers.Rule;
