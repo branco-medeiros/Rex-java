@@ -2,7 +2,7 @@ package rex.matchers;
 
 import rex.Context;
 
-public class LitMatcher extends MatcherBase{
+public class LitMatcher extends MatcherClass{
 
 	private Object value;
 	

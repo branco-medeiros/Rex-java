@@ -2,7 +2,7 @@ package rex.matchers;
 
 import rex.Matcher;
 
-public abstract class ValueMatcher extends MatcherBase{
+public abstract class ValueMatcher extends MatcherClass{
 	
 	protected Matcher value;
 	

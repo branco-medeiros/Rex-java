@@ -1,9 +1,9 @@
 package rex.matchers;
 
 import rex.Context;
-import rex.types.Capture;
+import rex.interfaces.Capture;
 
-public class ReMatcher extends MatcherBase{
+public class ReMatcher extends MatcherClass{
 
 	private String id;
 	
@@ -15,12 +15,11 @@ public class ReMatcher extends MatcherBase{
 		return id;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean match(Context ctx) {
 		Capture cap = ctx.result().var(id);
 		if(cap == null) return false;
-		Iterable iter = ctx.range(cap.start(), cap.end());
+		Iterable<?> iter = ctx.span(cap.start(), cap.end());
 		return SeqMatcher.match(ctx, iter);
 	}
 	

@@ -4,7 +4,7 @@ import rex.Context;
 import rex.matchers.Rule;
 import rex.testing.Test;
 import rex.types.ParseResult;
-import rex.utils.Create;
+import rex.utils.Contexts;
 
 public class TestContext {
 	
@@ -13,7 +13,7 @@ public class TestContext {
 		Test.run("CHARCLASS", (t) -> {
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc\")", 
-				() -> Create.contextFrom("abc")
+				() -> Contexts.from("abc")
 			).isValid();
 			
 			t.ensure("ctx.moveNext()", ()-> ctx.moveNext()).isTrue();

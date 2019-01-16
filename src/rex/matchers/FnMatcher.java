@@ -3,7 +3,7 @@ package rex.matchers;
 import rex.Context;
 import rex.interfaces.ContextAction;
 
-public class FnMatcher extends MatcherBase {
+public class FnMatcher extends MatcherClass {
 
 	private ContextAction fn;
 	
@@ -18,7 +18,7 @@ public class FnMatcher extends MatcherBase {
 	
 	@Override
 	public boolean match(Context ctx) {
-		return fn.run(ctx);
+		return fn.eval(ctx);
 	}
 	
 }

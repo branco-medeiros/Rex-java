@@ -1,4 +1,4 @@
-package rex.types;
+package rex.writers;
 
 import java.util.ArrayList;
 import java.util.List;

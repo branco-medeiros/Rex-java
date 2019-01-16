@@ -1,6 +1,5 @@
 package rex.matchers;
 
-import rex.types.ParseResultState;
 import rex.Context;
 import rex.Matcher;
 
@@ -12,12 +11,6 @@ public class IsMatcher extends ValueMatcher{
 
 	@Override
 	public boolean match(Context ctx) {
-		int pos = ctx.position();
-		ParseResultState ps = ctx.result().getState();
-		
-		boolean ret = value.match(ctx);
-		ctx.setPosition(pos);
-		ctx.result().setState(ps);
-		return ret;
+		return value.match(ctx.getClone());
 	}
 }

@@ -1,39 +1,37 @@
 package rex.types;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import rex.Context;
 import rex.Matcher;
-import rex.interfaces.Stk;
+import rex.interfaces.Capture;
+import rex.interfaces.Result;
 import rex.matchers.Rule;
 import rex.utils.Captures;
-import rex.utils.Create;
+import rex.utils.Convert;
 
-public class ParseResult extends Capture {
+public class ParseResult<T> extends CaptureClass<T> implements Result {
 
 	private Rule rule;
-	private ParseResult pending;
+	private Result pending;
 	private Matcher matcher;
-	private Stk<Capture> vars;
-	private Stk<ParseResult> children;
+	private Stash<Capture> vars;
+	private Stash<Result> children;
 
 
-	public ParseResult(Rule rule, Context ctx) {
-		super(null, ctx);
+	public ParseResult(ContextClass<T> ctx, Rule rule) {
+		super(ctx, null);
 		this.rule = rule;
 		initVars();
 	}
 
-	public ParseResult(Rule rule, Context ctx, int start, Integer end) {
-		super(null, ctx, start, end);
+	public ParseResult(ContextClass<T> ctx, Rule rule, int start, Integer end) {
+		super(ctx, null, start, end);
 		this.rule = rule;
 		initVars();
 	}
 
-	public ParseResult(ParseResult other) {
-		super(other);
+	public ParseResult(ParseResult<T> other) {
+		super(other.ctx(), null);
 		this.rule = other.rule();
 		this.vars = other.vars().getClone();
 		this.children = other.children.getClone();
@@ -41,8 +39,8 @@ public class ParseResult extends Capture {
 	}
 
 	protected void initVars() {
-		vars = Create.stk();
-		children = Create.stk();
+		vars = new Stash<>();
+		children = new Stash<>();
 	}
 
 	@Override
@@ -56,109 +54,80 @@ public class ParseResult extends Capture {
 	}
 
 
-	public Stk<Capture> vars(){
+	@Override
+	public Stash<Capture> vars(){
 		return vars;
 	}
 	
+	@Override
+	public List<Capture> varList(String id) {
+		return Captures.getAll(this.vars, id);
+	}
+	
+	@Override
 	public Capture var(String id) {
 		return Captures.get(this.vars, id);
 	}
 	
-	public List<Capture> vars(String id) {
-		return Captures.getAll(this.vars, id);
-	}
-	
 
-	protected ParseResult setVars(Stk<Capture> value) {
+	protected ParseResult<T> vars(Stash<Capture> value) {
 		vars = value;
 		return this;
 	}
 
-	public Stk<ParseResult> children(){
+	@Override
+	public Stash<Result> children(){
 		return children;
 	}
 
-	protected ParseResult setChildren(Stk<ParseResult> value) {
+	protected ParseResult<T> children(Stash<Result> value) {
 		children = value;
 		return this;
 	}
 
 	@Override
-	public ParseResult setStart(int value) {
-		super.setStart(value);
+	public ParseResult<T> start(int value) {
+		super.start(value);
 		return this;
 	}
 
 	@Override
-	public ParseResult setEnd(Integer value) {
-		super.setEnd(value);
+	public ParseResult<T> end(Integer value) {
+		super.end(value);
 		return this;
 	}
 
-	public ParseResult pending() {
+	@Override
+	public Result pending() {
 		return this.pending;
 	}
 
-	public ParseResult setPending(ParseResult value) {
+	@Override
+	public ParseResult<T> pending(Result value) {
 		this.pending = value;
 		return this;
 	}
 
+	@Override
 	public Matcher matcher() {
 		return this.matcher;
 	}
 
-	public ParseResult setMatcher(Matcher value) {
+	@Override
+	public ParseResult<T> matcher(Matcher value) {
 		this.matcher = value;
 		return this;
 	}
 
-	public ParseResultState getState() {
-		return new ParseResultState()
-				.setVars(this.vars.count())
-				.setChildren(this.children.count());
-	}
-
-	public ParseResult setState(ParseResultState value) {
-		this.vars.pop(value.vars);
-		this.children.pop(value.children);
-		return this;
-	}
-
 	@Override
-	public ParseResult getClone(){
-		return new ParseResult(this);
+	public ParseResult<T> getClone(){
+		return new ParseResult<>(this);
 	}
+	
 
 	@Override
 	public String toString() {
-		return ParseResult.toString(this);
+		return Convert.toString((Result) this);
 	}
 
-	public static String toString(ParseResult pr) {
-		if(pr == null) return "[<NULL>]";
-		StringBuilder s = new StringBuilder();
-		s.append("[");
-		s.append(pr.id());
-		s.append(": ");
-		s.append(pr.start());
-		s.append(", ");
-		Integer end = pr.end();
-		s.append(end == null? "?": end.toString());
-		s.append(" vars:{");
-		Set<String> names = new HashSet<String>();
-		for(Capture c: pr.vars().toList()) {
-			names.add(c.id());
-		}
-		s.append(String.join(", ", names));
-
-		s.append("} children:{");
-		names = new HashSet<String>();
-		for(ParseResult p: pr.children().toList()) {
-			names.add(Capture.toString(p));
-		}
-		s.append(String.join(", ", names));
-		s.append("}]");
-		return s.toString();
-	}
 }

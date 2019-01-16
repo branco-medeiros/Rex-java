@@ -5,7 +5,7 @@ import rex.Matcher;
 import rex.Rex;
 import rex.testing.Test;
 import rex.types.Charclass;
-import rex.utils.Create;
+import rex.utils.Contexts;
 
 public class TestRex {
 	
@@ -14,7 +14,7 @@ public class TestRex {
 			
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"ab\")", 
-				()-> Create.contextFrom("ab")
+				()-> Contexts.from("ab")
 			).isValid();
 			
 			Matcher lit = (Matcher) t.ensure(
@@ -49,7 +49,7 @@ public class TestRex {
 
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc\")", 
-				() -> Create.contextFrom("abc")
+				() -> Contexts.from("abc")
 			).isValid();
 				
 			Matcher opt = (Matcher) t.ensure(
@@ -87,7 +87,7 @@ public class TestRex {
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",
-				()-> Create.contextFrom("abc123")
+				()-> Contexts.from("abc123")
 			).isValid();
 			
 			Matcher star = (Matcher) t.ensure(
@@ -126,7 +126,7 @@ public class TestRex {
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",
-				()-> Create.contextFrom("abc123")
+				()-> Contexts.from("abc123")
 			).isValid();
 			
 			Matcher plus = (Matcher) t.ensure(
@@ -161,7 +161,7 @@ public class TestRex {
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",
-				()-> Create.contextFrom("abc123")
+				()-> Contexts.from("abc123")
 			).isValid();
 				
 			Matcher m = (Matcher) t.ensure(
@@ -197,7 +197,7 @@ public class TestRex {
 		
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc123\")",
-				()-> Create.contextFrom("abc123")
+				()-> Contexts.from("abc123")
 			).isValid();
 				
 			Matcher m = (Matcher) t.ensure(

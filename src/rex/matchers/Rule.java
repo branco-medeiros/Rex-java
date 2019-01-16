@@ -6,6 +6,7 @@ import java.util.List;
 import rex.Context;
 import rex.Matcher;
 import rex.interfaces.Predicate;
+import rex.interfaces.Result;
 import rex.types.ParseResult;
 
 public class Rule extends ListMatcher implements Matcher{
@@ -73,19 +74,19 @@ public class Rule extends ListMatcher implements Matcher{
 	}
 	
 	
-	protected ParseResult findLeftContext(Context ctx) {
+	protected Result findLeftContext(Context ctx) {
 		//finds a previous occurrence of this rule that is still
 		//being processed
 		int pos = ctx.position();
 		final Rule rule = this;
-		ParseResult prev = ctx.trace().each(new Predicate<ParseResult>() {
+		Result prev = ctx.trace().each(new Predicate<Result>() {
 			@Override
-			public Boolean eval(ParseResult value, int index) {
+			public Boolean eval(Result value, int index) {
 				return value.rule() == rule && value.start() == pos;
 			}
 		});
 		if(prev != null) {
-			ParseResult ret = prev.pending();
+			Result ret = prev.pending();
 			if(ret == null) throw new RuntimeException("Infinite left recursion detected");
 			return ret;
 		}
@@ -98,51 +99,51 @@ public class Rule extends ListMatcher implements Matcher{
 	}
 	
 	public boolean match(Context ctx, int prec) {
-		ParseResult prev = findLeftContext(ctx);
+		Result prev = findLeftContext(ctx);
 		if(prev != null) {
 			//early exit because of a previous left context recursion
 			ctx.result().children().push(prev);
-			ctx.setPosition(prev.end());
+			ctx.position(prev.end());
 			return true;
 		}
 		
 		int start = ctx.position();
-		ParseResult result = ctx.enter(this);
+		Result result = ctx.enter(this);
 		
 		boolean matched = false;
 		for(Matcher m: list) {
 			if(m instanceof PrecMatcher) continue;
-			ctx.setPosition(start);
+			ctx.position(start);
 			if(m.match(ctx)) {
-				result.setMatcher(m);
+				result.matcher(m);
 				matched = true;
 				break;
 			}
 		}
 		if(matched) {
 			//processes left recursive rules
-			result.setEnd(ctx.position());
+			result.end(ctx.position());
 			while(matched) {
-				ParseResult cur = new ParseResult(this, ctx).setPending(result);
+				Result cur = ctx.newResult(this).pending(result);
 				matched = false;
 				ctx.trace().swap(cur);
 				for(Matcher m: list) {
 					PrecMatcher pm = (PrecMatcher) m;
 					if(pm == null || pm.precedence() <= prec) continue;
-					ctx.setPosition(start);
+					ctx.position(start);
 					matched = pm.match(ctx);
 					if(matched) {
-						cur.setMatcher(m);
+						cur.matcher(m);
 						break;
 					}
 				}
-				cur.setPending(null);
+				cur.pending(null);
 				if(matched) {
 					result = cur;
-					result.setEnd(ctx.position());
+					result.end(ctx.position());
 					
 				} else {
-					ctx.setPosition(result.end());
+					ctx.position(result.end());
 					ctx.trace().swap(result);
 					
 				}

@@ -1,39 +1,41 @@
 package rex.types;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import rex.interfaces.Predicate;
+import rex.utils.Convert;
 
-public class Heap<T> extends BaseReader<T>{
+public class Stash<T> implements Iterable<T>{
 
 	private Node<T> node;
+	
+	public Stash() {
+	}
+	
+	public Stash(Stash<T> other) {
+		this.node = other.getNode();
+	}
+	
+	public Stash(T value) {
+		push(value);
+	}
 	
 	public Node<T> getNode() {
 		return node;
 	}
 
-	@Override
-	public int count() {
-		return node == null? 0: node.index + 1;
-	}
-
-	@Override
-	protected T getAt(int index) {
-		if(index < 0 || index >= count()) return null;
-		Node<T> n = findNode(index);
-		return n == null? null: n.value;
-	}
-	
 	public T value() {
 		return node == null? null: node.value;
 	}
 
-	public Heap<T> value(T newValue){
+	public Stash<T> value(T newValue){
 		theNode().value = newValue;
 		return this;
 	}
 	
-	public Heap<T> push(T value) {
+	public Stash<T> push(T value) {
 		node = new Node<T>(value, node);
 		return this;
 	}
@@ -73,7 +75,7 @@ public class Heap<T> extends BaseReader<T>{
 	
 	@Override
 	public Iterator<T> iterator() {
-		return new HeapIterator<>(node);
+		return new StashIterator<>(node);
 	}
 	
 	protected Node<T> theNode(){
@@ -94,10 +96,40 @@ public class Heap<T> extends BaseReader<T>{
 	}
 
 	protected Node<T> findNode(int index){
-		index = getIndex(index); if(index < 0 || index >= count()) return null;
+		int count = size();
+		index = Convert.getIndex(index, count); if(index < 0 || index >= count) return null;
 		Node<T> cur = node;
 		while(cur.index > index) cur = cur.prev;
 		return cur;
+	}
+
+	public T get(int index) {
+		index = Convert.getIndex(index, size());
+		Node<T> n = findNode(index);
+		return n == null? null: n.value;
+	}
+
+	public int size() {
+		return node == null? 0: node.index;
+	}
+	
+	public Stash<T> getClone(){
+		return new Stash<>(this);
+	}
+	
+	public Stash<T> assign(Stash<T> other){
+		if(other != null) this.node = other.node;
+		return this;
+	}
+	
+	public List<T> toList(){
+		List<T> result = new ArrayList<>(size());
+		Node<T> cur = node;
+		while(cur != null) {
+			result.set(cur.index, cur.value);
+			cur = cur.prev;
+		}
+		return result;
 	}
 
 	

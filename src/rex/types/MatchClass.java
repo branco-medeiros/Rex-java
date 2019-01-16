@@ -5,7 +5,9 @@ import java.util.List;
 
 import rex.Context;
 import rex.Match;
+import rex.interfaces.Capture;
 import rex.interfaces.MatchAction;
+import rex.interfaces.Result;
 import rex.utils.Captures;
 
 /***
@@ -28,29 +30,29 @@ import rex.utils.Captures;
  *  	System.out.println(m.span().toString())  	
  *	}
  */
-public class MatchResult implements Match {
+public class MatchClass implements Match {
 	protected boolean matched;
 	protected MatchAction action;
 	protected Context ctx;
 	
-	public MatchResult(MatchAction action, Context ctx, boolean matched, int pos) {
+	public MatchClass(MatchAction action, Context ctx, boolean matched, int pos) {
 		this.matched = matched;
 		this.ctx = ctx;
 		this.action = action;
-		ctx.setPosition(pos); 
+		ctx.position(pos); 
 	}
 
 	public boolean matched() {
 		return matched;
 	}
 	
-	public ParseResult result() {
+	public Result result() {
 		return ctx.result();
 	}
 
 	public Match next() {
 		if(!matched()) return this;
-		Context ctx = this.ctx.getClone().setPosition(end());
+		Context ctx = this.ctx.getClone().position(end());
 		return action.eval(ctx);
 	}
 	
@@ -81,7 +83,8 @@ public class MatchResult implements Match {
 		return new MatchIterator(this);
 	}
 	
-	public static MatchResult fail(Context ctx) {
-		return new MatchResult(null, ctx, false, ctx.position());
+	public static MatchClass fail(Context ctx) {
+		return new MatchClass(null, ctx, false, ctx.position());
 	}
+
 }

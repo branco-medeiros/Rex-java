@@ -15,7 +15,7 @@ public class OrMatcher extends ListMatcher{
 	public boolean match(Context ctx) {
 		int pos = ctx.position();
 		for(Matcher m: list) {
-			ctx.setPosition(pos);
+			ctx.position(pos);
 			if(m.match(ctx)) return true;
 		}
 		return false;

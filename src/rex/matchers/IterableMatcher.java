@@ -1,7 +1,7 @@
 package rex.matchers;
 
 @SuppressWarnings("rawtypes")
-public abstract class IterableMatcher extends MatcherBase {
+public abstract class IterableMatcher extends MatcherClass {
 
 	protected Iterable items;
 	

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import rex.interfaces.Lst;
 import rex.interfaces.MatchAction;
 import rex.interfaces.Writer;
 import rex.matchers.AndMatcher;
@@ -24,11 +23,11 @@ import rex.matchers.PrecMatcher;
 import rex.matchers.ReMatcher;
 import rex.matchers.RepMatcher;
 import rex.matchers.SeqMatcher;
-import rex.types.ArrayWriter;
-import rex.types.CharSequenceWriter;
-import rex.types.ListWriter;
-import rex.types.MatchResult;
-import rex.utils.Create;
+import rex.types.MatchClass;
+import rex.utils.Contexts;
+import rex.writers.ArrayWriter;
+import rex.writers.CharSequenceWriter;
+import rex.writers.ListWriter;
 
 public class Rex {
 	
@@ -147,22 +146,22 @@ public class Rex {
 	}
 
 	public static <T> Context eval(Matcher matcher, Iterable<T> src) {
-		Context ctx = Create.contextFrom(src);
+		Context ctx = Contexts.from(src);
 		return eval(matcher, ctx);
 	}
 	
 	public static <T> Context eval(Matcher matcher, Iterator<T> src) {
-		Context ctx = Create.contextFrom(src);
+		Context ctx = Contexts.from(src);
 		return eval(matcher, ctx);
 	}
 	
 	public static Context eval(Matcher matcher, CharSequence src) {
-		Context ctx = Create.contextFrom(src);
+		Context ctx = Contexts.from(src);
 		return eval(matcher, ctx);
 	}
 	
 	public static <T> Context eval(Matcher matcher, T[] src) {
-		Context ctx = Create.contextFrom(src);
+		Context ctx = Contexts.from(src);
 		return eval(matcher, ctx);
 	}
 	
@@ -180,11 +179,11 @@ public class Rex {
 				while(!ctx.finished()) {
 					int pos = ctx.position();
 					if(matcher.match(ctx)) {
-						return new MatchResult(this, ctx, true, pos);
+						return new MatchClass(this, ctx, true, pos);
 					}
-					ctx.setPosition(pos).moveNext();
+					ctx.position(pos).moveNext();
 				}
-				return new MatchResult(this, ctx, false, ctx.position());
+				return new MatchClass(this, ctx, false, ctx.position());
 			}
 		};
 		return action.eval(ctx);
@@ -207,7 +206,7 @@ public class Rex {
 	) {
 		return doReplace(
 			chars,
-			Create.contextFrom(chars), 
+			Contexts.from(chars), 
 			new CharSequenceWriter(), 
 			matcher, 
 			true, 
@@ -223,7 +222,7 @@ public class Rex {
 	) {
 		Writer<T[], T> writer = new ArrayWriter<>(itens);
 		boolean replaced = doReplace(
-			Create.contextFrom(itens),
+			Contexts.from(itens),
 			writer,
 			matcher,
 			Arrays.asList(values),
@@ -241,7 +240,7 @@ public class Rex {
 	) {
 		return doReplace(
 			list,
-			Create.contextFrom(list), 
+			Contexts.from(list), 
 			new ListWriter<>(), 
 			matcher, 
 			true, 
@@ -258,7 +257,7 @@ public class Rex {
 	) {
 		Writer<List<T>, T> writer = new ListWriter<>();
 		boolean replaced = doReplace(
-			Create.contextFrom(iter),
+			Contexts.from(iter),
 			writer,
 			matcher,
 			Arrays.asList(values),
@@ -276,7 +275,7 @@ public class Rex {
 	) {
 		return doReplace(
 			chars,
-			Create.contextFrom(chars), 
+			Contexts.from(chars), 
 			new CharSequenceWriter(), 
 			matcher, 
 			false, 
@@ -293,7 +292,7 @@ public class Rex {
 		
 		Writer<T[], T> writer = new ArrayWriter<>(itens);
 		boolean replaced = doReplace(
-			Create.contextFrom(itens),
+			Contexts.from(itens),
 			writer,
 			matcher,
 			Arrays.asList(values),
@@ -311,7 +310,7 @@ public class Rex {
 	) {
 		return doReplace(
 			list,
-			Create.contextFrom(list), 
+			Contexts.from(list), 
 			new ListWriter<>(), 
 			matcher, 
 			false, 
@@ -328,7 +327,7 @@ public class Rex {
 	) {
 		Writer<List<T>, T> writer = new ListWriter<>();
 		boolean replaced = doReplace(
-			Create.contextFrom(iter),
+			Contexts.from(iter),
 			writer,
 			matcher,
 			Arrays.asList(values),
@@ -359,7 +358,7 @@ public class Rex {
 		){
 			//requires that source is convertible to Lst<T>
 			@SuppressWarnings("unchecked")
-			Lst<T> itens = (Lst<T>) src;
+			List<T> itens = (List<T>) src;
 			if(itens == null) throw new RuntimeException(new InvalidClassException("source"));
 			
 			List<Match> found = firstOnly
@@ -387,7 +386,7 @@ public class Rex {
 				lastPos = m.end();
 			}
 			
-			int end = itens.count();
+			int end = itens.size();
 			for(int i = lastPos; i < end; ++i) {
 				result.append(itens.get(i));
 			}

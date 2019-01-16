@@ -2,13 +2,13 @@ package rex;
 
 import java.util.List;
 
+import rex.interfaces.Capture;
 import rex.interfaces.Range;
-import rex.types.Capture;
-import rex.types.ParseResult;
+import rex.interfaces.Result;
 
 public interface Match extends Iterable<Match>, Range {
 	boolean matched();
-	ParseResult result();
+	Result result();
 	List<Capture> group(String id);
 	Capture capture(String id);
 	Match next();

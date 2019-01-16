@@ -1,7 +1,5 @@
 package rex.matchers;
 
-import rex.types.ParseResult;
-import rex.types.ParseResultState;
 import rex.Context;
 import rex.Matcher;
 
@@ -18,17 +16,17 @@ public class RepMatcher extends ValueMatcher{
 	
 	@Override
 	public boolean match(Context ctx) {
-		ParseResult pr = ctx.result();
-		ParseResultState ps = pr.getState();
-		
+		Context prev = ctx.getClone();
 		boolean hasMin = min != null && min != 0;
 		boolean hasMax = max != null && max != 0;
 		
 		int p1 = ctx.position();
 		int count = 0;
+		Context worker = ctx.getClone();
 		while(true) {
 			int p2 = p1;
-			if(!value.match(ctx)) break;
+			if(!value.match(worker)) break;
+			ctx.assign(worker);
 			count += 1;
 			if(hasMax && count >= max) break;
 			p1 = ctx.position();
@@ -40,7 +38,7 @@ public class RepMatcher extends ValueMatcher{
 		if(hasMin && count < min) {
 			//discards any variables and children
 			//built while repeating
-			pr.setState(ps);
+			ctx.assign(prev);
 			return false;
 		}
 		return true;

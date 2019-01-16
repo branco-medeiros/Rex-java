@@ -4,7 +4,7 @@ import java.util.List;
 
 import rex.Matcher;
 
-public abstract class ListMatcher extends MatcherBase {
+public abstract class ListMatcher extends MatcherClass {
 	
 	protected List<Matcher> list;
 

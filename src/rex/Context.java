@@ -1,28 +1,34 @@
 package rex;
 
-import rex.interfaces.Stk;
+import java.util.List;
+
+import rex.interfaces.Capture;
+import rex.interfaces.Result;
 import rex.matchers.Rule;
-import rex.types.ParseResult;
+import rex.types.Stash;
 
 public interface Context{
 	boolean finished();
 	boolean moveNext();
 	int position();
-	Context setPosition(int value);
+	Context position(int value);
 
 	boolean matches(int position, Object value);
 	boolean matches(Object value);
 	boolean inRange(int position, Object first, Object last);
 	boolean inRange(Object first, Object last);
 
-	ParseResult root();
-	ParseResult result();
-	ParseResult enter(Rule rule);
-	ParseResult leave(boolean Result);
-	Stk<ParseResult> trace();
+	Result root();
+	Result result();
+	Result enter(Rule rule);
+	Result leave(boolean Result);
+	Stash<Result> trace();
 	
-	Iterable<?> range(int start, Integer end);
+	List<?> span(int start, Integer end);
 	
+	Context assign(Context other);
 	Context getClone();
 	
+	Capture newCapture(String id, int start, Integer end);
+	Result newResult(Rule rule);
 }

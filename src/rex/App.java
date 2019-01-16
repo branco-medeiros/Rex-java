@@ -1,26 +1,13 @@
 package rex;
 
-import rex.interfaces.Lst;
 import rex.tests.TestCharclass;
 import rex.tests.TestContext;
 import rex.tests.TestRex;
-import rex.utils.Create;
 
 public class App {
 
 	public static void main(String[] args) {
-		Lst<Character> lst = Create.lstFrom("abcdef");
-		
-		@SuppressWarnings("rawtypes")
-		Iterable it = (Iterable) lst;
-		for(Object o: it) System.out.print(o);
-		System.out.println("");
-		
-		Iterable<Character> it2 = (Iterable<Character>) lst;
-		for(Character c: it2) System.out.print(c);
-		System.out.println("");
-		
-		
+				
 		System.out.println("Tests:");
 		System.out.println("1. Charclass");
 		System.out.println("2. Context");

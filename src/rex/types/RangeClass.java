@@ -2,11 +2,11 @@ package rex.types;
 
 import rex.interfaces.Range;
 
-public class BaseRange implements Range{
+public class RangeClass implements Range{
 	private int start;
 	private Integer end;
 	
-	public BaseRange(int start, Integer end) {
+	public RangeClass(int start, Integer end) {
 		this.start = start;
 		this.end = end;
 	}
@@ -21,12 +21,12 @@ public class BaseRange implements Range{
 		return end;
 	}
 	
-	BaseRange start(int value) {
+	public RangeClass start(int value) {
 		start = value;
 		return this;
 	}
 	
-	BaseRange end(Integer value) {
+	public RangeClass end(Integer value) {
 		end = value;
 		return this;
 	}

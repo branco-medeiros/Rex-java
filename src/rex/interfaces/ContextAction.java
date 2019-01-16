@@ -2,6 +2,6 @@ package rex.interfaces;
 
 import rex.Context;
 
-public interface ContextAction {
-	boolean run(Context ctx);
+public interface ContextAction extends Action<Context, Boolean> {
+	Boolean eval(Context ctx);
 }

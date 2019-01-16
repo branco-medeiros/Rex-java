@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rex.interfaces.Predicate;
-import rex.interfaces.Stk;
-import rex.types.Capture;
+import rex.interfaces.Capture;
+import rex.types.Stash;
 
 public class Captures {
 
@@ -13,7 +13,7 @@ public class Captures {
 	 * gets a list of all occurrences of a capture with the specified name;
 	 * more recent captures come first
 	 */
-	public static List<Capture> getAll(Stk<Capture> stk, String id){
+	public static List<Capture> getAll(Stash<Capture> stk, String id){
 		List<Capture> result = new ArrayList<Capture>();
 		stk.each(new Predicate<Capture>() {
 			@Override
@@ -25,14 +25,14 @@ public class Captures {
 		return result;
 	}
 
-	public static List<Capture> getAll(Stk<Capture> stk) {
+	public static List<Capture> getAll(Stash<Capture> stk) {
 		return getAll(stk, "");
 	}
 	
 	/***
 	 * returns the first (more recent) capture with the specified name
 	 */
-	public static Capture get(Stk<Capture> stk, String id){
+	public static Capture get(Stash<Capture> stk, String id){
 		return stk.each(new Predicate<Capture>() {
 			@Override
 			public Boolean eval(Capture value, int index) {
@@ -44,7 +44,7 @@ public class Captures {
 	/***
 	 * returns the first (more recent) capture with id equal the empty string
 	 */
-	public static Capture get(Stk<Capture> stk) {
+	public static Capture get(Stash<Capture> stk) {
 		return get(stk, "");
 	}
 	

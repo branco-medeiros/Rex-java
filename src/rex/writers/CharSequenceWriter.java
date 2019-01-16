@@ -1,4 +1,4 @@
-package rex.types;
+package rex.writers;
 
 import rex.interfaces.Writer;
 

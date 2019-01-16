@@ -4,26 +4,25 @@ import java.util.Arrays;
 
 import rex.Context;
 import rex.Matcher;
-import rex.interfaces.RexMatcher;
 
-public abstract class MatcherBase implements RexMatcher{
+public abstract class MatcherClass implements Matcher{
 	
 	@Override
 	public abstract boolean match(Context ctx);
 	
-	public RexMatcher plus() {
+	public MatcherClass plus() {
 		return new RepMatcher(1, null, this);
 	}
 	
-	public RexMatcher star() {
+	public MatcherClass star() {
 		return new RepMatcher(null, null, this);
 	}
 	
-	public RexMatcher opt() {
+	public MatcherClass opt() {
 		return new RepMatcher(null, 1, this);
 	}
 	
-	public RexMatcher or(Matcher other) {
+	public MatcherClass or(Matcher other) {
 		if(other == null) throw new NullPointerException("other");
 		if(this instanceof OrMatcher) {
 			OrMatcher ret = (OrMatcher) this;
@@ -34,7 +33,7 @@ public abstract class MatcherBase implements RexMatcher{
 		return new OrMatcher(Arrays.asList(this, other));
 	}
 	
-	public RexMatcher and(Matcher other) {
+	public MatcherClass and(Matcher other) {
 		if(other == null) throw new NullPointerException("other");
 		if(this instanceof AndMatcher) {
 			AndMatcher ret = (AndMatcher) this;
