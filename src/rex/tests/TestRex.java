@@ -250,6 +250,100 @@ public class TestRex {
 	} //testOr
 	
 
+	public static void testSeq() {
+		Test.run("REX SEQ", (t)->{
+		
+			Context ctx = (Context) t.ensure(
+				"ctx = Create.contextFrom(\"abc123\")",
+				()-> Contexts.from("abc123")
+			).isValid();
+				
+			Matcher m = (Matcher) t.ensure(
+				"m = Rex.seq(\"abc\")",
+				() -> Rex.seq("abc")
+			).isValid();
+		
+			t.ensure(
+				"m.match(ctx) //[a]bc123",
+				()-> m.match(ctx)
+			).isTrue();
+			
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(3);
+			
+			t.ensure(
+				"m.match(ctx) //abc[1]23",
+				()-> m.match(ctx)
+			).isFalse();
+			
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(3);
+		});
+
+	} //testSeq
+	
+
+	public static void testOneOf() {
+		Test.run("REX ONE-OF", (t)->{
+		
+			Context ctx = (Context) t.ensure(
+				"ctx = Create.contextFrom(\"abc123\")",
+				()-> Contexts.from("abc123")
+			).isValid();
+				
+			Matcher m = (Matcher) t.ensure(
+				"m = Rex.oneof(\"abc\")",
+				() -> Rex.oneof("abc")
+			).isValid();
+		
+			t.ensure(
+				"m.match(ctx) //[a]bc123",
+				()-> m.match(ctx)
+			).isTrue();
+			
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(1);
+			
+			t.ensure(
+				"m.match(ctx) //a[b]c123",
+				()-> m.match(ctx)
+			).isTrue();
+			
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(2);
+				
+			t.ensure(
+				"m.match(ctx) //ab[c]123",
+				()-> m.match(ctx)
+			).isTrue();
+			
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(3);
+				
+			
+			t.ensure(
+				"m.match(ctx) //abc[1]23",
+				()-> m.match(ctx)
+			).isFalse();
+				
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(3);
+		});
+
+	} //testOr
+	
 
 	public static void testAll() {
 		testLit();
@@ -258,6 +352,8 @@ public class TestRex {
 		testOpt();
 		testPlus();
 		testStar();
+		testSeq();
+		testOneOf();
 		
 	}
 }

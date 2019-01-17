@@ -30,6 +30,7 @@ import rex.matchers.RuleMatcher;
 import rex.matchers.SeqMatcher;
 import rex.types.MatchClass;
 import rex.utils.Contexts;
+import rex.utils.Lists;
 import rex.writers.ArrayWriter;
 import rex.writers.CharSequenceWriter;
 import rex.writers.ListWriter;
@@ -147,10 +148,18 @@ public class Rex {
 		return new FirstOfMatcher(source);
 	}
 	
+	public static FirstOfMatcher oneof(CharSequence source) {
+		return new FirstOfMatcher(Lists.from(source));
+	}
+	
 	public static SeqMatcher seq(Iterable<?> source) {
 		return new SeqMatcher(source);
 	}
 	
+	public static SeqMatcher seq(CharSequence value) {
+		return new SeqMatcher(Lists.from(value));
+	}
+			
 	public static IsMatcher is(Object... values) {
 		Matcher v = asMatcher(values);
 		return new IsMatcher(v);
@@ -424,6 +433,6 @@ public class Rex {
 			
 			return true;
 		} //doReplace
-			
+
 	
 }

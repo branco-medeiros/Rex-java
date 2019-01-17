@@ -7,7 +7,6 @@ import rex.Matcher;
 import rex.interfaces.Context;
 import rex.interfaces.Predicate;
 import rex.interfaces.Result;
-import rex.types.ResultClass;
 
 public class Rule extends ListMatcher implements Matcher{
 
