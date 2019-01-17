@@ -3,33 +3,13 @@ package rex.types;
 import java.util.Iterator;
 import java.util.List;
 
-import rex.Context;
 import rex.Match;
 import rex.interfaces.Capture;
+import rex.interfaces.Context;
 import rex.interfaces.MatchAction;
 import rex.interfaces.Result;
 import rex.utils.Captures;
 
-/***
- * returned from rex.find; can be used interactively to continue the search;
- * - source(): returns the source used in the parsing
- * - matched(): returns true or false according to the parsing result;
- * - result(): the actual parsing result(the rule hierachy and captures produced during parsing)
- * - next(): returns a new MatchResult of the appropriate type executing the last operation again
- * 			on the subject at the current position;
- * - start(): returns the starting position of the match
- * - end(): returns the ending position (if any) of the match
- * - group(id): returns a list with all captures matching id
- * - capture(id): returns the last occurrence of the the capture matching id
- * - span(id): returns a span over the capture matching id
- * - iterator(): returns an iterator for matchresults starting with the current one;
- *
- * Usage:
- * 	//as an enumerable
- *  for(MatchResult<Character> m: SomeGrammar.findIn(SomeText)){
- *  	System.out.println(m.span().toString())  	
- *	}
- */
 public class MatchClass implements Match {
 	protected boolean matched;
 	protected MatchAction action;
@@ -39,27 +19,45 @@ public class MatchClass implements Match {
 		this.matched = matched;
 		this.ctx = ctx;
 		this.action = action;
-		ctx.position(pos); 
+	}
+	
+	public MatchClass(Context ctx, boolean matched, int pos) {
+		this(null, ctx, matched, pos);
+	}
+	
+	
+	public MatchAction action() {
+		return action;
+	}
+	
+	public MatchClass action(MatchAction value) {
+		this.action = value;
+		return this;
 	}
 
+	@Override
 	public boolean matched() {
 		return matched;
 	}
 	
+	@Override
 	public Result result() {
 		return ctx.result();
 	}
 
+	@Override
 	public Match next() {
 		if(!matched()) return this;
 		Context ctx = this.ctx.getClone().position(end());
 		return action.eval(ctx);
 	}
 	
+	@Override
 	public int start() {
 		return ctx.result().start();
 	}
 	
+	@Override
 	public Integer end() {
 		return ctx.result().end();
 	}
@@ -67,13 +65,20 @@ public class MatchClass implements Match {
 	/***
 	 * returns all occurrences of a given id
 	 */
+	@Override
 	public List<Capture> group(String id){
 		return Captures.getAll(this.result().vars(), id);
+	}
+	
+	@Override
+	public List<?> value() {
+		return ctx.span(start(), end());
 	}
 	
 	/***
 	 * returns the first (more recent) occurrence of a given id
 	 */
+	@Override
 	public Capture capture(String id) {
 		return Captures.get(this.result().vars(), id);
 	}
@@ -84,7 +89,7 @@ public class MatchClass implements Match {
 	}
 	
 	public static MatchClass fail(Context ctx) {
-		return new MatchClass(null, ctx, false, ctx.position());
+		return new MatchClass(ctx, false, ctx.position());
 	}
 
 }

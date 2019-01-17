@@ -1,8 +1,8 @@
 package rex.matchers;
 
-import rex.Context;
 import rex.Matcher;
 import rex.interfaces.Capture;
+import rex.interfaces.Context;
 import rex.types.Stash;
 
 public class CapMatcher extends ValueMatcher{

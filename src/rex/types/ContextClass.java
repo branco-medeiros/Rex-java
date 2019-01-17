@@ -2,8 +2,8 @@ package rex.types;
 
 import java.util.List;
 
-import rex.Context;
 import rex.interfaces.Capture;
+import rex.interfaces.Context;
 import rex.interfaces.Result;
 import rex.matchers.Rule;
 import rex.utils.Convert;
@@ -20,7 +20,7 @@ public class ContextClass<T> extends Sequence<T> implements Context{
 	}
 
 	public ContextClass(ContextClass<T> other) {
-		super(other.source());
+		super(other);
 		result = other.result.getClone();
 		root = other.root();
 	}
@@ -65,6 +65,7 @@ public class ContextClass<T> extends Sequence<T> implements Context{
 	public boolean matches(int index, Object value) {
 		T cur = get(index);
 		if(cur == null || value == null) return false;
+		if(cur instanceof Character) value = Convert.toChar(value);
 		return value.equals(cur) || cur.equals(value);
 	}
 
@@ -91,12 +92,17 @@ public class ContextClass<T> extends Sequence<T> implements Context{
 
 	@Override
 	public List<?> span(int start, Integer end) {
+		return theSpan(start,  end);
+	}
+	
+	public List<T> theSpan(int start, Integer end){
 		int count = size();
 		start = Convert.inMinRange(0, count, start);
 		end = Convert.inRange(0,  count,  end);
 		return subList(start,  end);
 	}
-		
+	
+	
 	@Override
 	public ContextClass<T> getClone() {
 		return new ContextClass<>(this);
@@ -120,6 +126,7 @@ public class ContextClass<T> extends Sequence<T> implements Context{
 	
 	@Override
 	public Result newResult(Rule rule) {
-		return new ParseResult<>(this, rule);
+		return new ResultClass<>(this, rule);
 	}
+	
 }

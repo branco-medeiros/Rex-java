@@ -2,7 +2,7 @@ package rex.utils;
 
 import java.util.Iterator;
 
-import rex.Context;
+import rex.interfaces.Context;
 import rex.interfaces.Range;
 import rex.types.RangeClass;
 import rex.types.ContextClass;

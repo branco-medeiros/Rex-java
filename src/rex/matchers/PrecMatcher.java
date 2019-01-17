@@ -1,7 +1,7 @@
 package rex.matchers;
 
-import rex.Context;
 import rex.Matcher;
+import rex.interfaces.Context;
 
 public class PrecMatcher extends ValueMatcher{
 

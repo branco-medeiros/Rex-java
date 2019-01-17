@@ -1,4 +1,4 @@
-package rex.types;
+package rex;
 
 public class Charclass {
 	private static interface Equatable<T>{

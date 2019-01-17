@@ -1,11 +1,10 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.interfaces.Context;
 
 public class SeqMatcher extends IterableMatcher{
 
-	@SuppressWarnings("rawtypes")
-	public SeqMatcher(Iterable items) {
+	public SeqMatcher(Iterable<?> items) {
 		super(items);
 	}
 	

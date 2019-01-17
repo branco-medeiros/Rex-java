@@ -1,7 +1,7 @@
 package rex.matchers;
 
-import rex.Context;
 import rex.interfaces.Capture;
+import rex.interfaces.Context;
 
 public class ReMatcher extends MatcherClass{
 

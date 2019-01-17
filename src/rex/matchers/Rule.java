@@ -3,11 +3,11 @@ package rex.matchers;
 import java.util.ArrayList;
 import java.util.List;
 
-import rex.Context;
 import rex.Matcher;
+import rex.interfaces.Context;
 import rex.interfaces.Predicate;
 import rex.interfaces.Result;
-import rex.types.ParseResult;
+import rex.types.ResultClass;
 
 public class Rule extends ListMatcher implements Matcher{
 

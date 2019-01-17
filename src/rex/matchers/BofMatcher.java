@@ -1,6 +1,6 @@
 package rex.matchers;
 
-import rex.Context;
+import rex.interfaces.Context;
 
 public class BofMatcher extends MatcherClass{
 

@@ -1,9 +1,7 @@
-package rex;
+package rex.interfaces;
 
 import java.util.List;
 
-import rex.interfaces.Capture;
-import rex.interfaces.Result;
 import rex.matchers.Rule;
 import rex.types.Stash;
 

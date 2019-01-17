@@ -1,7 +1,7 @@
 package rex.tests;
 
+import rex.Charclass;
 import rex.testing.Test;
-import rex.types.Charclass;
 
 public class TestCharclass {
 	public static void run() {

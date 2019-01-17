@@ -2,8 +2,8 @@ package rex.matchers;
 
 import java.util.Arrays;
 
-import rex.Context;
 import rex.Matcher;
+import rex.interfaces.Context;
 
 public abstract class MatcherClass implements Matcher{
 	

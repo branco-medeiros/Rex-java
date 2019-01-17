@@ -1,16 +1,15 @@
 package rex.matchers;
 
-@SuppressWarnings("rawtypes")
 public abstract class IterableMatcher extends MatcherClass {
 
-	protected Iterable items;
+	protected Iterable<?> items;
 	
-	public IterableMatcher(Iterable items) {
+	public IterableMatcher(Iterable<?> items) {
 		if(items == null) throw new NullPointerException("items");
 		this.items = items;
 	}
 	
-	public Iterable items() {
+	public Iterable<?> items() {
 		return this.items;
 	}
 	

@@ -3,9 +3,13 @@ package rex;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import rex.interfaces.Action;
+import rex.interfaces.Capture;
+import rex.interfaces.Context;
 import rex.interfaces.MatchAction;
 import rex.interfaces.Writer;
 import rex.matchers.AndMatcher;
@@ -14,7 +18,6 @@ import rex.matchers.CapMatcher;
 import rex.matchers.EofMatcher;
 import rex.matchers.EpsMatcher;
 import rex.matchers.FirstOfMatcher;
-import rex.matchers.Grammar;
 import rex.matchers.IsMatcher;
 import rex.matchers.IsNotMatcher;
 import rex.matchers.LitMatcher;
@@ -22,6 +25,8 @@ import rex.matchers.OrMatcher;
 import rex.matchers.PrecMatcher;
 import rex.matchers.ReMatcher;
 import rex.matchers.RepMatcher;
+import rex.matchers.Rule;
+import rex.matchers.RuleMatcher;
 import rex.matchers.SeqMatcher;
 import rex.types.MatchClass;
 import rex.utils.Contexts;
@@ -30,6 +35,32 @@ import rex.writers.CharSequenceWriter;
 import rex.writers.ListWriter;
 
 public class Rex {
+	
+	private interface ReplaceAction<T> extends Action<Context, Iterable<T>>{}
+	
+	private static <T> ReplaceAction<T> getReplaceAction(final Iterable<T> source){
+		final BackReference<T> br = (BackReference<T>) source;
+		
+		if(br == null) return new ReplaceAction<T>() {
+			@Override
+			public Iterable<T> eval(Context ctx) {
+				return source;
+			}
+		};
+		
+		return new ReplaceAction<T>() {
+			@Override
+			public Iterable<T> eval(Context ctx) {
+				Capture cap = ctx.result().var(br.id());
+				
+				if(cap == null) return Collections.<T>emptyList();
+				
+				@SuppressWarnings("unchecked")
+				List<T> ret = (List<T>) cap.value();
+				return ret;
+			}
+		};
+	}
 	
 	@SuppressWarnings("rawtypes")
 	public static Matcher asMatcher(Object value) {
@@ -131,6 +162,10 @@ public class Rex {
 	
 	public static PrecMatcher prec(int prec, Object... values) {
 		return new PrecMatcher(prec, asMatcher(values));
+	}
+	
+	public static RuleMatcher call(Rule rule, int prec) {
+		return new RuleMatcher(rule, prec);
 	}
 	
 	public static CapMatcher cap(String id, Object... values) {
@@ -369,27 +404,23 @@ public class Rex {
 
 			int lastPos = 0;
 			
-			//adusts back references to actual captures
-			for(int i=0, max = replaces.size(); i < max; ++i) {
-				BackReference<T> br = (BackReference<T>) replaces.get(i);
-				if(br != null) replaces.set(i, null); //todo: create a capture here
-			}
+			List<ReplaceAction<T>> replaceActions = new ArrayList<>();
+
+			//adjusts back references to actual captures
+			for(Iterable<T> it: replaces) replaceActions.add(getReplaceAction(it));
 			
 			for(Match m: found) {
 				if(!m.matched()) continue;
-				int start = m.start();
-				for(int i= lastPos; i < start; ++i) {
-					result.append(itens.get(i));
-				}
 				
-				for(Iterable<T> newValue: replaces) result.write(newValue);
+				int upTo = m.start();
+				if(lastPos < upTo) result.write(itens.subList(lastPos,  upTo));
+				for(ReplaceAction<T> rep: replaceActions) result.write(rep.eval(src));
+				
 				lastPos = m.end();
 			}
 			
 			int end = itens.size();
-			for(int i = lastPos; i < end; ++i) {
-				result.append(itens.get(i));
-			}
+			if(end > lastPos) result.write(itens.subList(lastPos,  end));
 			
 			return true;
 		} //doReplace

@@ -1,9 +1,11 @@
-package rex.matchers;
+package rex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import rex.matchers.Rule;
 
 public class Grammar{
 
@@ -40,7 +42,7 @@ public class Grammar{
 		return this.defaultRule;
 	}
 	
-	public Grammar setDefaultRule(Rule value) {
+	public Grammar defaultRule(Rule value) {
 		this.defaultRule = value;
 		return this;
 	}

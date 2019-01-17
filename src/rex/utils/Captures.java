@@ -3,8 +3,8 @@ package rex.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import rex.interfaces.Predicate;
 import rex.interfaces.Capture;
+import rex.interfaces.Predicate;
 import rex.types.Stash;
 
 public class Captures {

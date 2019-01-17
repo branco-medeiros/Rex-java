@@ -2,8 +2,8 @@ package rex.matchers;
 
 import java.util.List;
 
-import rex.Context;
 import rex.Matcher;
+import rex.interfaces.Context;
 
 public class OrMatcher extends ListMatcher{
 

@@ -9,7 +9,7 @@ import rex.matchers.Rule;
 import rex.utils.Captures;
 import rex.utils.Convert;
 
-public class ParseResult<T> extends CaptureClass<T> implements Result {
+public class ResultClass<T> extends CaptureClass<T> implements Result {
 
 	private Rule rule;
 	private Result pending;
@@ -18,19 +18,19 @@ public class ParseResult<T> extends CaptureClass<T> implements Result {
 	private Stash<Result> children;
 
 
-	public ParseResult(ContextClass<T> ctx, Rule rule) {
+	public ResultClass(ContextClass<T> ctx, Rule rule) {
 		super(ctx, null);
 		this.rule = rule;
 		initVars();
 	}
 
-	public ParseResult(ContextClass<T> ctx, Rule rule, int start, Integer end) {
+	public ResultClass(ContextClass<T> ctx, Rule rule, int start, Integer end) {
 		super(ctx, null, start, end);
 		this.rule = rule;
 		initVars();
 	}
 
-	public ParseResult(ParseResult<T> other) {
+	public ResultClass(ResultClass<T> other) {
 		super(other.ctx(), null);
 		this.rule = other.rule();
 		this.vars = other.vars().getClone();
@@ -70,7 +70,7 @@ public class ParseResult<T> extends CaptureClass<T> implements Result {
 	}
 	
 
-	protected ParseResult<T> vars(Stash<Capture> value) {
+	protected ResultClass<T> vars(Stash<Capture> value) {
 		vars = value;
 		return this;
 	}
@@ -80,19 +80,19 @@ public class ParseResult<T> extends CaptureClass<T> implements Result {
 		return children;
 	}
 
-	protected ParseResult<T> children(Stash<Result> value) {
+	protected ResultClass<T> children(Stash<Result> value) {
 		children = value;
 		return this;
 	}
 
 	@Override
-	public ParseResult<T> start(int value) {
+	public ResultClass<T> start(int value) {
 		super.start(value);
 		return this;
 	}
 
 	@Override
-	public ParseResult<T> end(Integer value) {
+	public ResultClass<T> end(Integer value) {
 		super.end(value);
 		return this;
 	}
@@ -103,7 +103,7 @@ public class ParseResult<T> extends CaptureClass<T> implements Result {
 	}
 
 	@Override
-	public ParseResult<T> pending(Result value) {
+	public ResultClass<T> pending(Result value) {
 		this.pending = value;
 		return this;
 	}
@@ -114,14 +114,14 @@ public class ParseResult<T> extends CaptureClass<T> implements Result {
 	}
 
 	@Override
-	public ParseResult<T> matcher(Matcher value) {
+	public ResultClass<T> matcher(Matcher value) {
 		this.matcher = value;
 		return this;
 	}
 
 	@Override
-	public ParseResult<T> getClone(){
-		return new ParseResult<>(this);
+	public ResultClass<T> getClone(){
+		return new ResultClass<>(this);
 	}
 	
 

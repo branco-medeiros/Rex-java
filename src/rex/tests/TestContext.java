@@ -1,16 +1,16 @@
 package rex.tests;
 
-import rex.Context;
+import rex.interfaces.Context;
+import rex.interfaces.Result;
 import rex.matchers.Rule;
 import rex.testing.Test;
-import rex.types.ParseResult;
 import rex.utils.Contexts;
 
 public class TestContext {
 	
 	
 	public static void run() {
-		Test.run("CHARCLASS", (t) -> {
+		Test.run("CONTEXT", (t) -> {
 			Context ctx = (Context) t.ensure(
 				"ctx = Create.contextFrom(\"abc\")", 
 				() -> Contexts.from("abc")
@@ -22,7 +22,7 @@ public class TestContext {
 			t.ensure("ctx.matches(\"c\")", ()-> ctx.matches("c")).isFalse();
 			t.ensure("ctx.finished()", ()-> ctx.finished()).isFalse();
 			
-			ParseResult pr = (ParseResult) t.ensure(
+			Result pr = (Result) t.ensure(
 				"pr = ctx.enter(<identifier>)", 
 				()-> ctx.enter(new Rule("identifier"))
 			).isValid();

@@ -19,7 +19,7 @@ public class App {
 		System.out.println("8. Rex.or");
 		
 		// Scanner input = new Scanner(System.in);
-		String opt = "8"; //input.nextLine();
+		String opt = "6"; //input.nextLine();
 		
 		System.out.println(">> " + opt);
 		switch(opt) {

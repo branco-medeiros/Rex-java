@@ -83,10 +83,12 @@ public class CaptureClass<T> implements Capture{
 	}
 
 	@Override
-	public <V> List<V> value() {
-		@SuppressWarnings("unchecked")
-		List<V> ret = (List<V>) ctx.span(start, end);
-		return ret;
+	public List<?> value() {
+		return theValue();
+	}
+	
+	public List<T> theValue(){
+		return ctx.theSpan(start, end);
 	}
 
 }
