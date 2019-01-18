@@ -1,9 +1,13 @@
 package rex.utils;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import rex.ReplaceAction;
 import rex.interfaces.Capture;
+import rex.interfaces.Context;
 import rex.interfaces.Result;
 
 public class Convert {
@@ -79,4 +83,34 @@ public class Convert {
 		return String.format("[%s: %d, %s]", c.id(), c.start(), (end == null? "?": end.toString()));
 	}
 
+	
+	public static <T> ReplaceAction<T> toReplace(Iterable<T> source){
+		return new ReplaceAction<T>() {
+			@Override
+			public Iterable<T> eval(Context arg) {
+				return source;
+			}
+		};
+	}
+	
+	public static <T> ReplaceAction<T> toReplaceFromCapture(String id){
+		return new ReplaceAction<T>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public Iterable<T> eval(Context ctx) {
+				Capture cap = ctx.result().var(id);
+				if(cap == null) return Collections.<T>emptyList();
+				List<T> ret = (List<T>) cap.value();
+				return ret;
+			}
+		};
+	}
+	
+	public static ReplaceAction<Character> toReplace(CharSequence source){
+		return toReplace(Lists.from(source));
+	}
+	
+	
+	
+	
 }

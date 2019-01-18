@@ -3,12 +3,9 @@ package rex;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import rex.interfaces.Action;
-import rex.interfaces.Capture;
 import rex.interfaces.Context;
 import rex.interfaces.MatchAction;
 import rex.interfaces.Writer;
@@ -37,33 +34,7 @@ import rex.writers.ListWriter;
 
 public class Rex {
 	
-	private interface ReplaceAction<T> extends Action<Context, Iterable<T>>{}
-	
-	private static <T> ReplaceAction<T> getReplaceAction(final Iterable<T> source){
-		final BackReference<T> br = (BackReference<T>) source;
 		
-		if(br == null) return new ReplaceAction<T>() {
-			@Override
-			public Iterable<T> eval(Context ctx) {
-				return source;
-			}
-		};
-		
-		return new ReplaceAction<T>() {
-			@Override
-			public Iterable<T> eval(Context ctx) {
-				Capture cap = ctx.result().var(br.id());
-				
-				if(cap == null) return Collections.<T>emptyList();
-				
-				@SuppressWarnings("unchecked")
-				List<T> ret = (List<T>) cap.value();
-				return ret;
-			}
-		};
-	}
-	
-	@SuppressWarnings("rawtypes")
 	public static Matcher asMatcher(Object value) {
 		if(value == null) throw new NullPointerException("value");
 		if(value instanceof Matcher) return (Matcher) value;
@@ -72,8 +43,8 @@ public class Rex {
 			return flatten(asMatcherList((Object[]) value));
 		}
 		
-		if(value instanceof Iterable && !(value instanceof String)) {
-			return flatten(asMatcherList((Iterable) value));
+		if(value instanceof Iterable<?>) {
+			return flatten(asMatcherList((Iterable<?>) value));
 		}
 		
 		return new LitMatcher(value);
@@ -91,8 +62,7 @@ public class Rex {
 		return list;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static List<Matcher> asMatcherList(Iterable values) {
+	public static List<Matcher> asMatcherList(Iterable<?> values) {
 		List<Matcher> list = new ArrayList<Matcher>();
 		for(Object o: values){
 			list.add(asMatcher(o));
@@ -246,7 +216,7 @@ public class Rex {
 	public static CharSequence replace(
 		Matcher matcher, 
 		CharSequence chars, 
-		Iterable<Character>... values
+		ReplaceAction<Character>... values
 	) {
 		return doReplace(
 			chars,
@@ -262,7 +232,7 @@ public class Rex {
 	public static <T> T[] replace(
 		Matcher matcher,
 		T[] itens,
-		Iterable<T>... values
+		ReplaceAction<T>... values
 	) {
 		Writer<T[], T> writer = new ArrayWriter<>(itens);
 		boolean replaced = doReplace(
@@ -280,7 +250,7 @@ public class Rex {
 	public static <T> List<T> replace(
 		Matcher matcher,
 		List<T> list,
-		Iterable<T>... values
+		ReplaceAction<T>... values
 	) {
 		return doReplace(
 			list,
@@ -297,7 +267,7 @@ public class Rex {
 	public static <T> Iterable<T> replace(
 		Matcher matcher,
 		Iterable<T> iter,
-		Iterable<T>... values
+		ReplaceAction<T>... values
 	) {
 		Writer<List<T>, T> writer = new ListWriter<>();
 		boolean replaced = doReplace(
@@ -315,7 +285,7 @@ public class Rex {
 	public static CharSequence replaceAll(
 		Matcher matcher, 
 		CharSequence chars, 
-		Iterable<Character>... values
+		ReplaceAction<Character>... values
 	) {
 		return doReplace(
 			chars,
@@ -331,7 +301,7 @@ public class Rex {
 	public static <T> T[] replaceAll(
 		Matcher matcher,
 		T[] itens,
-		Iterable<T>... values
+		ReplaceAction<T>... values
 	) {
 		
 		Writer<T[], T> writer = new ArrayWriter<>(itens);
@@ -350,7 +320,7 @@ public class Rex {
 	public static <T> List<T> replaceAll(
 		Matcher matcher,
 		List<T> list,
-		Iterable<T>... values
+		ReplaceAction<T>... values
 	) {
 		return doReplace(
 			list,
@@ -367,7 +337,7 @@ public class Rex {
 	public static <T> Iterable<T> replaceAll(
 		Matcher matcher,
 		Iterable<T> iter,
-		Iterable<T>... values
+		ReplaceAction<T>... values
 	) {
 		Writer<List<T>, T> writer = new ListWriter<>();
 		boolean replaced = doReplace(
@@ -387,7 +357,7 @@ public class Rex {
 		Writer<L, T> writer, 
 		Matcher matcher, 
 		boolean firstOnly,
-		Iterable<T>... values
+		ReplaceAction<T>... values
 	) {
 		boolean replaced = doReplace(ctx, writer,  matcher, Arrays.asList(values), firstOnly);
 		return replaced? writer.getValue(): src;
@@ -397,7 +367,7 @@ public class Rex {
 			Context src, 
 			Writer<L, T> result, 
 			Matcher matcher, 
-			List<Iterable<T>> replaces,
+			List<ReplaceAction<T>> replaces,
 			boolean firstOnly
 		){
 			//requires that source is convertible to Lst<T>
@@ -413,17 +383,12 @@ public class Rex {
 
 			int lastPos = 0;
 			
-			List<ReplaceAction<T>> replaceActions = new ArrayList<>();
-
-			//adjusts back references to actual captures
-			for(Iterable<T> it: replaces) replaceActions.add(getReplaceAction(it));
-			
 			for(Match m: found) {
 				if(!m.matched()) continue;
 				
 				int upTo = m.start();
 				if(lastPos < upTo) result.write(itens.subList(lastPos,  upTo));
-				for(ReplaceAction<T> rep: replaceActions) result.write(rep.eval(src));
+				for(ReplaceAction<T> rep: replaces) result.write(rep.eval(src));
 				
 				lastPos = m.end();
 			}
