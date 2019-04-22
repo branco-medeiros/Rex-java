@@ -17,9 +17,10 @@ public class App {
 		System.out.println("6. Rex.plus");
 		System.out.println("7. Rex.and");
 		System.out.println("8. Rex.or");
+		System.out.println("9. Rex.is");
 		
 		// Scanner input = new Scanner(System.in);
-		String opt = "6"; //input.nextLine();
+		String opt = "9"; //input.nextLine();
 		
 		System.out.println(">> " + opt);
 		switch(opt) {
@@ -31,6 +32,7 @@ public class App {
 		case "6": TestRex.testPlus(); break;
 		case "7": TestRex.testAnd(); break;
 		case "8": TestRex.testOr(); break;
+		case "9": TestRex.testIs(); break;
 		default:
 			System.out.println("Invalid option");
 		}

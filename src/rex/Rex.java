@@ -14,7 +14,7 @@ import rex.matchers.AnyMatcher;
 import rex.matchers.CapMatcher;
 import rex.matchers.EofMatcher;
 import rex.matchers.EpsMatcher;
-import rex.matchers.FirstOfMatcher;
+import rex.matchers.OneOfMatcher;
 import rex.matchers.IsMatcher;
 import rex.matchers.IsNotMatcher;
 import rex.matchers.LitMatcher;
@@ -114,12 +114,12 @@ public class Rex {
 		return new EofMatcher();
 	}
 	
-	public static FirstOfMatcher oneof(Iterable<?> source) {
-		return new FirstOfMatcher(source);
+	public static OneOfMatcher oneof(Iterable<?> source) {
+		return new OneOfMatcher(source);
 	}
 	
-	public static FirstOfMatcher oneof(CharSequence source) {
-		return new FirstOfMatcher(Lists.from(source));
+	public static OneOfMatcher oneof(CharSequence source) {
+		return new OneOfMatcher(Lists.from(source));
 	}
 	
 	public static SeqMatcher seq(Iterable<?> source) {

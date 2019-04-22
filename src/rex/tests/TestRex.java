@@ -344,6 +344,44 @@ public class TestRex {
 
 	} //testOr
 	
+	public static void testIs() {
+		Test.run("REX IS", (t)->{
+			
+			Context ctx = (Context) t.ensure(
+				"ctx = Create.contextFrom(\"abc123\")",
+				()-> Contexts.from("abc123")
+			).isValid();
+				
+			Matcher m = (Matcher) t.ensure(
+				"m = Rex.is(\"a\" \"b\" \"c\")",
+				() -> Rex.is("'a' 'b' 'c'")
+			).isValid();
+		
+			t.ensure(
+				"m.match(ctx) //[a]bc123",
+				()-> m.match(ctx)
+			).isTrue();
+			
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(0);
+			
+			ctx.position(3);
+			
+			t.ensure(
+				"m.match(ctx) //abc[1]23",
+				()-> m.match(ctx)
+			).isFalse();
+			
+			t.ensure(
+				"...and ctx.position",
+				()-> ctx.position()
+			).isEqual(3);
+				
+		});
+	} //testIs
+	
 
 	public static void testAll() {
 		testLit();
@@ -354,6 +392,6 @@ public class TestRex {
 		testStar();
 		testSeq();
 		testOneOf();
-		
+		testIs();
 	}
 }

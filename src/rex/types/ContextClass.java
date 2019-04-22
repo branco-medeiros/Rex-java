@@ -5,10 +5,11 @@ import java.util.List;
 import rex.interfaces.Capture;
 import rex.interfaces.Context;
 import rex.interfaces.Result;
+import rex.interfaces.Span;
 import rex.matchers.Rule;
 import rex.utils.Convert;
 
-public class ContextClass<T> extends Sequence<T> implements Context{
+public class ContextClass<T> extends Sequence<T> implements Context, Span<List<T>>{
 
 	protected Stash<Result> result = new Stash<>();
 	protected Result root = null;

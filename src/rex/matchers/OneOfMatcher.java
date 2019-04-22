@@ -2,9 +2,9 @@ package rex.matchers;
 
 import rex.interfaces.Context;
 
-public class FirstOfMatcher extends IterableMatcher{
+public class OneOfMatcher extends IterableMatcher{
 
-	public FirstOfMatcher(Iterable<?> items) {
+	public OneOfMatcher(Iterable<?> items) {
 		super(items);
 	}
 	
