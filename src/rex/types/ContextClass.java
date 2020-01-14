@@ -129,5 +129,11 @@ public class ContextClass<T> extends Sequence<T> implements Context, Span<List<T
 	public Result newResult(Rule rule) {
 		return new ResultClass<>(this, rule);
 	}
+
+	@Override
+	public List<T> theSpan(int start, int end) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
